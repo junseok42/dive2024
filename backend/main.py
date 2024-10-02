@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
+from database import user_engine,stamp_engine,user_Base,stamp_Base,region_Base,region_engine
 app = FastAPI()
 
 origins = ["*"]
@@ -12,6 +12,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+user_Base.metadata.create_all(bind=user_engine)
+stamp_Base.metadata.create_all(bind=stamp_engine)
+region_Base.metadata.create_all(bind=region_engine)
 
 @app.get("/")
 async def root():
