@@ -3,3 +3,4 @@ sqlalchemy==2.0.34
 uvicorn==0.20.0
 mysql-connector-python==8.4.0
 python-dotenv==1.0.1
+passlib==1.7.4

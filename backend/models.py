@@ -1,8 +1,7 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Boolean
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey,Text
 from sqlalchemy.orm import relationship
-from database import user_Base,region_Base,stamp_Base
+from database import user_Base, stamp_Base
 from datetime import datetime
-
 
 # User 모델 정의
 class User(user_Base):
@@ -12,29 +11,40 @@ class User(user_Base):
     user_id = Column(String(255), unique=True, nullable=False, index=True)  
     password = Column(String(255), nullable=False)
     user_name = Column(String(30), nullable=False)
-    
 
-# 다른 모델 정의
+    stamps = relationship("UserStamp", back_populates="user")
 
+#지역구 테이블 정의
+class District(user_Base):
+    __tablename__ = "districts"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(50), nullable=False) 
+
+    stamps = relationship("Stamp", back_populates="district")
+
+
+# Stamp 테이블 정의
 class Stamp(stamp_Base):
     __tablename__ = "stamps"
     id = Column(Integer, primary_key=True, index=True)
-    stamp_name = Column(String(100), nullable=False)
-    user_id = Column(Integer, nullable=False)  # 외래 키 없음
+    stamp_name = Column(String(100), nullable=False)  
+    title = Column(String(255), nullable=False)  
+    description = Column(Text, nullable=True)  
+    latitude = Column(Float, nullable=False)  
+    longitude = Column(Float, nullable=False)  
+    district_id = Column(Integer, ForeignKey('districts.id'), nullable=False)  
     created_at = Column(DateTime, default=datetime.utcnow)
-    region_id = Column(Integer, nullable=True)  # 외래 키 없음
+
+    district = relationship("District", back_populates="stamps")
+    user_stamps = relationship("UserStamp", back_populates="stamp")
 
 
-# Region 테이블 정의
-class Region(region_Base):
-    __tablename__ = "regions"
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(50), nullable=False)
-
-
-# 유저 스탬프 기록 테이블
+# 유저 스탬프 기록 테이블 정의
 class UserStamp(stamp_Base):
     __tablename__ = "user_stamps"
     received_at = Column(DateTime, default=datetime.utcnow)
-    stamp_id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, primary_key=True)
+    stamp_id = Column(Integer, ForeignKey('stamps.id'), primary_key=True)
+    user_id = Column(Integer, ForeignKey('user_info.id'), primary_key=True)
+
+    user = relationship("User", back_populates="stamps")
+    stamp = relationship("Stamp", back_populates="user_stamps")
