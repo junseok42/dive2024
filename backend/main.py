@@ -1,7 +1,19 @@
+# fastapi
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from database import user_engine,stamp_engine,user_Base,stamp_Base,region_Base,region_engine
+
+# db
+from database import user_engine,user_Base,stamp_Base,stamp_engine,region_Base,region_engine
+
+# user
+from user.user_router import router as user_router
+
 app = FastAPI()
+
+
+@app.get("/")
+async def init():
+    return {"init"}
 
 origins = ["*"]
 
@@ -16,10 +28,9 @@ user_Base.metadata.create_all(bind=user_engine)
 stamp_Base.metadata.create_all(bind=stamp_engine)
 region_Base.metadata.create_all(bind=region_engine)
 
-@app.get("/")
-async def root():
-    return {"message": "DIVE2024"}
 
 if __name__ == "__main__":
     import uvicorn
+
+    
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
