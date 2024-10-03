@@ -28,7 +28,7 @@ user_Base.metadata.create_all(bind=user_engine)
 stamp_Base.metadata.create_all(bind=stamp_engine)
 region_Base.metadata.create_all(bind=region_engine)
 
-
+app.include_router(user_router, tags=["user"])
 if __name__ == "__main__":
     import uvicorn
 
