@@ -26,12 +26,12 @@ class Stamp(stamp_Base):
     description = Column(Text, nullable=True)  
     latitude = Column(Float, nullable=False)  
     longitude = Column(Float, nullable=False)  
-    district_id = Column(Integer, ForeignKey('districts.id'), nullable=False)  
+    district_id = Column(Integer, nullable=False)  
     created_at = Column(DateTime, default=datetime.utcnow)
 
 # 유저 스탬프 기록 테이블 정의
 class UserStamp(stamp_Base):
     __tablename__ = "user_stamps"
     received_at = Column(DateTime, default=datetime.utcnow)
-    stamp_id = Column(Integer, ForeignKey('stamps.id'), primary_key=True)
-    user_id = Column(Integer, ForeignKey('user_info.id'), primary_key=True)
+    stamp_id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, primary_key=True)
