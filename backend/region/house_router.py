@@ -16,8 +16,8 @@ router = APIRouter(
 
 
 
-@router.get("/list")
-def show_house(district: District, region_db: Session = Depends(get_region_db)):
+@router.get("/list/{house_name}")
+def show_house(district: str, region_db: Session = Depends(get_region_db)):
     datas = region_db.query(House_model).filter(House_model.region == district).all()
     return [{"type": data.type, "name": data.name, "cnt" : data.cnt, "address" : data.address} for data in datas]
     
