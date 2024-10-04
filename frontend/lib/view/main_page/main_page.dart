@@ -6,6 +6,10 @@ class MainPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 상단 상태바의 높이를 가져옴
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
+    precacheImage(AssetImage('assets/main_image.png'), context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -18,9 +22,9 @@ class MainPageView extends StatelessWidget {
               ),
             ),
           ),
-          // 프로필 및 알림 아이콘을 상단에 고정
+          // 프로필 및 알림 아이콘을 상단에 고정, 상태바 높이만큼 여백 추가
           Positioned(
-            top: 5,
+            top: statusBarHeight + 5, // 상태바 높이를 더하여 상단바에 가리지 않도록 조정
             left: 5,
             right: 5,
             child: Row(
@@ -50,11 +54,11 @@ class MainPageView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: 380),
-                mainButton('🏠 주거 정보 서비스 🏠', '부산에 이사오고 싶다면? 어쩌고 저쩌고'),
+                mainButton(
+                    '🏠 주거 정보 서비스 🏠', '부산에 이사오고 싶다면? 어쩌고 저쩌고', '/travel'),
                 SizedBox(height: 20),
-                mainButton('🏠 주거 정보 서비스 🏠', '부산에 이사오고 싶다면? 어쩌고 저쩌고'),
-                SizedBox(height: 20),
-                mainButton('🏠 주거 정보 서비스 🏠', '부산에 이사오고 싶다면? 어쩌고 저쩌고'),
+                mainButton(
+                    '🏠 주거 정보 서비스 🏠', '부산에 이사오고 싶다면? 어쩌고 저쩌고', '/house'),
               ],
             ),
           ),
@@ -64,12 +68,14 @@ class MainPageView extends StatelessWidget {
   }
 }
 
-Widget mainButton(String title, String description) {
+Widget mainButton(String title, String description, String route) {
   return SizedBox(
     width: double.infinity,
     height: 80,
     child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          Get.toNamed(route);
+        },
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class LoginButtonPageView extends StatelessWidget {
-  const LoginButtonPageView({super.key});
+class TravelMainPage extends StatelessWidget {
+  const TravelMainPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    precacheImage(AssetImage('assets/login_image.png'), context);
+    precacheImage(AssetImage('assets/select_region.png'), context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -15,7 +15,7 @@ class LoginButtonPageView extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/login_image.png'),
+                image: AssetImage('assets/select_region.png'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -24,26 +24,13 @@ class LoginButtonPageView extends StatelessWidget {
             top: 5,
             left: 5,
             child: IconButton(
-              icon: Icon(Icons.home_outlined),
-              color: Colors.white,
+              icon: Icon(Icons.arrow_back),
+              color: Colors.black,
               iconSize: 40.0,
               onPressed: () {
                 Get.back();
               },
             ),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: 475),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  loginButton(),
-                ],
-              ),
-            ],
           ),
         ],
       ),
