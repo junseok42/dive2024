@@ -10,6 +10,7 @@ class User(user_Base):
     user_id = Column(String(255), unique=True, nullable=False, index=True)  
     password = Column(String(255), nullable=False)
     user_name = Column(String(30), nullable=False)
+    current_puzzle = Column(Integer)
 
 # 지역구 테이블 정의
 class District(region_Base):
