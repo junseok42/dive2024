@@ -42,7 +42,7 @@ def delete_district(district_id: int, region_db: Session = Depends(get_region_db
     
     return {"detail": "삭제완료"}
 
-router.post("/subway")
+@router.post("/subway")
 def set_subway(region_db: Session = Depends(get_region_db)):
     f = open('역사편의시설.csv','r')
     rdr = csv.reader(f)
