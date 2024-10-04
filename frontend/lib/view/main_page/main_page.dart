@@ -13,7 +13,7 @@ class MainPageView extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('main_image.png'),
+                image: AssetImage('assets/main_image.png'),
                 fit: BoxFit.cover,
               ),
             ),
