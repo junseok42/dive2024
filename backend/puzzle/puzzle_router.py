@@ -50,7 +50,7 @@ def show_list(stamp_db: Session = Depends(get_stamp_db)):
     datas = stamp_db.query(Puzzle_model).all()
     return [{"puzzle_num" : data.puzzle_num}for data in datas]
 @router.get("/show_puzzle")
-def show_puzzle(credentials: HTTPAuthorizationCredentials = Security(security),stamp_db: Session = Depends(get_stamp_db), user_db: Session = Depends(get_user_db)):
+def show_puzzle(credentials: HTTPAuthorizationCredentials = Security(security),stamp_db: Session = Depends(get_stamp_db), user_db: Session = Depends(get_userdb)):
     token = credentials.credentials
     
     try:
