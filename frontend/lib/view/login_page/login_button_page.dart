@@ -8,26 +8,42 @@ class LoginButtonPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('login_image.png'),
-            fit: BoxFit.cover,
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('login_image.png'),
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: 475),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                loginButton(),
-              ],
-            )
-          ],
-        ),
+          Positioned(
+            top: 5,
+            left: 5,
+            child: IconButton(
+              icon: Icon(Icons.home_outlined),
+              color: Colors.white,
+              iconSize: 40.0,
+              onPressed: () {
+                Get.back();
+              },
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 475),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  loginButton(),
+                ],
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
