@@ -7,6 +7,8 @@ from database import user_engine,user_Base,stamp_Base,stamp_engine,region_Base,r
 
 # user
 from user.user_router import router as user_router
+from stamp.stamp_router import router as stamp_router
+from region.region_router import router as region_router
 
 app = FastAPI()
 
@@ -29,6 +31,8 @@ stamp_Base.metadata.create_all(bind=stamp_engine)
 region_Base.metadata.create_all(bind=region_engine)
 
 app.include_router(user_router, tags=["user"])
+app.include_router(stamp_router, tags=["stamp"])
+app.include_router(region_router, tags=["region"])
 if __name__ == "__main__":
     import uvicorn
 

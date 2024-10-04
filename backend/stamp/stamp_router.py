@@ -34,3 +34,4 @@ def create_new_stamp(
     
     user_info = user_db.query(User_model).filter(User_model.user_id == user_id).one_or_none()
     model_stamp = create_stamp()
+    return {"message" : "true"}

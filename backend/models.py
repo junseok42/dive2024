@@ -35,3 +35,17 @@ class UserStamp(stamp_Base):
     received_at = Column(DateTime, default=datetime.utcnow)
     stamp_id = Column(Integer, primary_key=True)
     user_id = Column(Integer, primary_key=True)
+
+class subway_info(region_Base):
+    __tablename__ = "station"
+    id = Column(Integer, primary_key=True, index=True)
+    line = Column(Integer)
+    station_name = Column(String(20), index= True)
+    Meeting_Point = Column(Integer)
+    Locker = Column(Integer)
+    Photo_Booth = Column(Integer)
+    ACDI = Column(Integer)#무인민원발급기
+    Infant_Nursing_Room = Column(Integer)
+    Wheelchair_Lift = Column(Integer)
+    TPVI = Column(Integer)#시각장애인유도로
+    URP = Column(Integer)#도시경찰대

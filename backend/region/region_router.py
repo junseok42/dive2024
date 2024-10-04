@@ -39,3 +39,5 @@ def delete_district(district_id: int, region_db: Session = Depends(get_region_db
     region_db.commit()
     
     return {"detail": "삭제완료"}
+
+router.post()

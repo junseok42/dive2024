@@ -3,16 +3,16 @@ from typing import Optional
 from datetime import datetime
 
 class stamp(BaseModel):
-    stamp_name : str
+    user_id : str
     title : str
     description : str
     latitude : float
     longitude : float
     district_id : int
 
-    
+
 class create_stamp(BaseModel):
-    stamp_name : str
+    user_id : str
     title : str
     description : str
     latitude : float
