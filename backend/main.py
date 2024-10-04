@@ -7,7 +7,7 @@ from database import user_engine,user_Base,stamp_Base,stamp_engine,region_Base,r
 
 # user
 from user.user_router import router as user_router
-from stamp.stamp_router import router as stamp_router
+from puzzle.puzzle_router import router as puzzle_router
 from region.region_router import router as region_router
 from region.house_router import router as house_router
 
@@ -32,7 +32,7 @@ stamp_Base.metadata.create_all(bind=stamp_engine)
 region_Base.metadata.create_all(bind=region_engine)
 
 app.include_router(user_router, tags=["user"])
-app.include_router(stamp_router, tags=["stamp"])
+app.include_router(puzzle_router, tags=["puzzle"])
 app.include_router(region_router, tags=["region"])
 app.include_router(house_router, tags=["house"])
 if __name__ == "__main__":

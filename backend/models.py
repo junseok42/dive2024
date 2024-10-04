@@ -18,23 +18,27 @@ class District(region_Base):
     name = Column(String(50), nullable=False) 
 
 # Stamp 테이블 정의
-class Stamp(stamp_Base):
-    __tablename__ = "stamps"
+class Puzzle(stamp_Base):
+    __tablename__ = "puzzles"
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(String(255), nullable=False)  
-    title = Column(String(255), nullable=False)  
-    description = Column(Text, nullable=True)  
-    latitude = Column(Float, nullable=False)  
-    longitude = Column(Float, nullable=False)  
-    district_id = Column(Integer, nullable=False, index = True)  
-    created_at = Column(DateTime, default=datetime.utcnow)
+    puzzle_cnt = Column(Integer)
 
 # 유저 스탬프 기록 테이블 정의
-class UserStamp(stamp_Base):
-    __tablename__ = "user_stamps"
+class UserPuzzle(stamp_Base):
+    __tablename__ = "user_puzzle"
     received_at = Column(DateTime, default=datetime.utcnow)
-    stamp_id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, primary_key=True)
+    stamp_id = Column(Integer)
+    user_id = Column(Integer, index=True)
+    puzzle_index = Column(Integer)
+class PuzzleInfo(stamp_Base):
+    __tablename__ = "puzzle_info"
+    id = Column(Integer, primary_key=True, index=True)
+    puzzle_index = Column(Integer)
+    district = Column(String(10), index= True)
+    title = Column(String(255))
+    content = Column(String(255))
+    address = Column(String(500))
+
 
 class subway_info(region_Base):
     __tablename__ = "station"
