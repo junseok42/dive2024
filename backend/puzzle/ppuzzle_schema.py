@@ -15,5 +15,4 @@ class ConfigPuzzle(BaseModel):
     address : str
 
 class ClearPuzzle(BaseModel):
-    puzzle_num : int
     puzzle_index: int

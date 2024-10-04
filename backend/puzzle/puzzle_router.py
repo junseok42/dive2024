@@ -112,7 +112,8 @@ def config_puzzle(data : ConfigPuzzle,stamp_db: Session = Depends(get_stamp_db))
 
 @router.post("/clear_puzzle")
 def clear_puzzle(data : ClearPuzzle, credentials: HTTPAuthorizationCredentials = Security(security),
-                 stamp_db: Session = Depends(get_stamp_db)):
+                 stamp_db: Session = Depends(get_stamp_db),
+                 user_db: Session = Depends(get_userdb)):
     token = credentials.credentials
     
     # JWT 토큰 디코딩 및 검증
@@ -124,7 +125,8 @@ def clear_puzzle(data : ClearPuzzle, credentials: HTTPAuthorizationCredentials =
     user_id = payload.get("sub")
     if not user_id:
         raise HTTPException(status_code=403, detail="유효하지 않은 토큰 페이로드입니다.")
-    data = UserPuzzle_model(puzzle_num = data.puzzle_num,
+    user = user_db.query(User_model).filter(User_model.user_id == user_id).first()
+    data = UserPuzzle_model(puzzle_num = user.current_puzzle,
                             puzzle_index = data.puzzle_index,
                             user_id = user_id,
                             received_at = datetime.now())
