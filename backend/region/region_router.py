@@ -43,6 +43,26 @@ def delete_district(district_id: int, region_db: Session = Depends(get_region_db
     return {"detail": "삭제완료"}
 
 @router.get("/subway/list")
-def show_list_subway(region_db: Session = Depends(get_region_db)):
-    station_data = region_db.query(Subway_Model).all()
+def show_list_subway(district : str,region_db: Session = Depends(get_region_db)):
+    station_data = region_db.query(Subway_Model).filter(Subway_Model.district == district).all()
     return  [{"id": station.id, "name": station.station_name} for station in station_data]
+
+@router.get("/subway/info")
+def show_info_station(station_id : int,region_db: Session = Depends(get_region_db)):
+    station_data = region_db.query(Subway_Model).filter(Subway_Model.id == station_id).all()
+    return [
+    {
+        "id": station.id,
+        "name": station.station_name,
+        "line": station.line,
+        "Meeting_Point": station.Meeting_Point,
+        "Locker": station.Locker,
+        "Photo_Booth": station.Photo_Booth,
+        "ACDI": station.ACDI,  # 무인 민원 발급기
+        "Infant_Nursing_Room": station.Infant_Nursing_Room,
+        "Wheelchair_Lift": station.Wheelchair_Lift,
+        "TPVI": station.TPVI,  # 시각 장애인 유도
+        "URP": station.URP,  # 도시경찰대
+        "district": station.district
+    }
+    for station in station_data]

@@ -58,6 +58,7 @@ class subway_info(region_Base):
     Wheelchair_Lift = Column(Integer)
     TPVI = Column(Integer)#시각장애인유도로
     URP = Column(Integer)#도시경찰대
+    district = Column(String(10),index=True)
 
 class subway_Locker_info(region_Base):
     __tablename__ = "Locker"
