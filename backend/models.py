@@ -79,3 +79,9 @@ class house_info(region_Base):
     cnt = Column(Integer)
     address = Column(String(500))
     region = Column(String(20),index=True)
+
+class FoodPlace(region_Base):
+    __tablename__ = "food"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(30), index=True)
+    District = Column(String(20),index=True)
