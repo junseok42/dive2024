@@ -3,9 +3,11 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 from sqlalchemy.orm import Session
 from database import get_region_db
-from models import District as District_Model
+from models import District as District_Model, subway_info as Subway_Model
 
 from region.region_schema import District
+import csv
+
 
 security = HTTPBearer()
 
@@ -40,4 +42,22 @@ def delete_district(district_id: int, region_db: Session = Depends(get_region_db
     
     return {"detail": "삭제완료"}
 
-router.post()
+router.post("/subway")
+def set_subway(region_db: Session = Depends(get_region_db)):
+    f = open('역사편의시설.csv','r')
+    rdr = csv.reader(f)
+    for line in rdr:
+        data = Subway_Model(line = line[0],
+                            station_name = line[1],
+                            Meeting_Point = int(line[2]),
+                            Locker = int(line[3]),
+                            Photo_Booth = int(line[4]),
+                            ACDI = int(line[5]),
+                            Infant_Nursing_Room = int(line[6]),
+                            Wheelchair_Lift = int(line[7]),
+                            TPVI = int(line[8]),
+                            URP = int(line[9]))
+        region_db.add(data)
+        region_db.commit()
+        region_db.refresh(data)
+    return {"message" : "성공"}
