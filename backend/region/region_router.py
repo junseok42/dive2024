@@ -68,8 +68,8 @@ def show_info_station(station_id : int,region_db: Session = Depends(get_region_d
     for station in station_data]
 
 @router.get("/subway/locker")
-def show_locker_info(station_id : int,region_db: Session = Depends(get_region_db)):
-    locker_data = region_db.query(Locker_Model).filter(Locker_Model.id == station_id).all()
+def show_locker_info(station_name : str,region_db: Session = Depends(get_region_db)):
+    locker_data = region_db.query(Locker_Model).filter(Locker_Model.station_name == station_name).all()
     return [
     {
         "id": locker.id,
