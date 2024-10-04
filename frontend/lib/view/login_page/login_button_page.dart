@@ -13,7 +13,7 @@ class LoginButtonPageView extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('login_image.png'),
+                image: AssetImage('assets/login_image.png'),
                 fit: BoxFit.cover,
               ),
             ),
