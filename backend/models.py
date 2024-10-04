@@ -21,6 +21,7 @@ class District(region_Base):
 class Puzzle(stamp_Base):
     __tablename__ = "puzzles"
     id = Column(Integer, primary_key=True, index=True)
+    puzzle_num = Column(Integer,index=True)
     puzzle_cnt = Column(Integer)
 
 # 유저 스탬프 기록 테이블 정의
@@ -28,13 +29,14 @@ class UserPuzzle(stamp_Base):
     __tablename__ = "user_puzzle"
     id = Column(Integer, primary_key=True, index=True)
     received_at = Column(DateTime, default=datetime.utcnow)
-    stamp_id = Column(Integer)
+    puzzle_num = Column(Integer)
     user_id = Column(Integer, index=True)
     puzzle_index = Column(Integer)
 
 class PuzzleInfo(stamp_Base):
     __tablename__ = "puzzle_info"
     id = Column(Integer, primary_key=True, index=True)
+    puzzle_num = Column(Integer, index=True)
     puzzle_index = Column(Integer)
     district = Column(String(10), index= True)
     title = Column(String(255))
