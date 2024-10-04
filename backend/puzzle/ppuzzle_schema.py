@@ -13,3 +13,7 @@ class ConfigPuzzle(BaseModel):
     title : str
     content : str
     address : str
+
+class ClearPuzzle(BaseModel):
+    puzzle_num : int
+    puzzle_index: int

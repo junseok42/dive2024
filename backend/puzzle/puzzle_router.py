@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends, Response,Security
+from fastapi import APIRouter, HTTPException, Depends, Security
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 from sqlalchemy.orm import Session
@@ -8,9 +8,9 @@ from models import subway_info as Subway_Model, subway_Locker_info as Locker_Mod
       User as User_model
 
 from region.region_schema import District  
-from puzzle.ppuzzle_schema import Puzzle, ConfigPuzzle
-from user.user_func import decode_jwt, get_user, get_hash_password, verify_password, create_access_token, create_refresh_token, get_current_user
-
+from puzzle.ppuzzle_schema import Puzzle, ConfigPuzzle, ClearPuzzle
+from user.user_func import decode_jwt
+from datetime import datetime
 
 security = HTTPBearer()
 
@@ -98,7 +98,7 @@ def select_puzzle(select: int, credentials: HTTPAuthorizationCredentials = Secur
     # 변경 사항 저장
     user_db.commit()
 
-    return {"message": "선택한 퍼즐이 업데이트되었습니다.", "selected_puzzle": select}
+    return {"message": "퍼즐이 선택되었습니다.", "selected_puzzle": select}
 
 @router.patch("/config_puzzle")
 def config_puzzle(data : ConfigPuzzle,stamp_db: Session = Depends(get_stamp_db)):
@@ -109,3 +109,43 @@ def config_puzzle(data : ConfigPuzzle,stamp_db: Session = Depends(get_stamp_db))
     config.address = data.address
     stamp_db.commit()
     return {"message": "선택한 퍼즐이 업데이트되었습니다."}
+
+@router.post("/clear_puzzle")
+def clear_puzzle(data : ClearPuzzle, credentials: HTTPAuthorizationCredentials = Security(security),
+                 stamp_db: Session = Depends(get_stamp_db)):
+    token = credentials.credentials
+    
+    # JWT 토큰 디코딩 및 검증
+    try:
+        payload = decode_jwt(token)
+    except Exception as e:
+        raise HTTPException(status_code=403, detail="유효하지 않은 토큰입니다.")
+    
+    user_id = payload.get("sub")
+    if not user_id:
+        raise HTTPException(status_code=403, detail="유효하지 않은 토큰 페이로드입니다.")
+    data = UserPuzzle_model(puzzle_num = data.puzzle_num,
+                            puzzle_index = data.puzzle_index,
+                            user_id = user_id,
+                            received_at = datetime.now())
+    stamp_db.add(data)
+    stamp_db.commit()
+    stamp_db.refresh(data)
+    return HTTPException(status_code=200, detail="정상적으로 퍼즐완료처리가 되었습니다.")
+
+@router.get("/show_my_puzzle")
+def show_my_puzzle(credentials: HTTPAuthorizationCredentials = Security(security),
+                   stamp_db: Session = Depends(get_stamp_db)):
+    token = credentials.credentials
+    
+    # JWT 토큰 디코딩 및 검증
+    try:
+        payload = decode_jwt(token)
+    except Exception as e:
+        raise HTTPException(status_code=403, detail="유효하지 않은 토큰입니다.")
+    
+    user_id = payload.get("sub")
+    if not user_id:
+        raise HTTPException(status_code=403, detail="유효하지 않은 토큰 페이로드입니다.")
+    datas = stamp_db.query(UserPuzzle_model).filter(UserPuzzle_model.user_id == user_id).all()
+    return [{"puzzle_num" : data.puzzle_num, "puzzle_index" : data.puzzle_index, "received at" : data.received_at} for data in datas]
