@@ -9,51 +9,59 @@ class MainPageView extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('main_image.png'),
-            fit: BoxFit.cover,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('main_image.png'),
+              fit: BoxFit.cover,
+            ),
           ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 475),
+                mainButton('🏠주거 서비스🏠', '부산에 이사오고 싶다면? 어쩌고 저쩌고'),
+              ],
+            ),
+          )),
+    );
+  }
+}
+
+Widget mainButton(String title, String description) {
+  return SizedBox(
+    width: double.infinity,
+    height: 80,
+    child: ElevatedButton(
+        onPressed: () {},
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 15.0),
+          backgroundColor: Colors.white,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 475),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                loginButton(),
-              ],
-            )
+            Text(
+              title,
+              style: TextStyle(
+                color: Color(0xFF424242),
+                fontSize: 18.0,
+              ),
+            ),
+            Text(
+              description,
+              style: TextStyle(
+                color: Color(0xFF525252),
+                fontSize: 12.0,
+              ),
+            ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-Widget loginButton() {
-  return SizedBox(
-    width: 145,
-    height: 65,
-    child: OutlinedButton(
-      onPressed: () {},
-      style: OutlinedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(33.0),
-        ),
-        side: BorderSide(color: Colors.white, width: 5.0),
-        padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 15.0),
-        backgroundColor: Colors.transparent,
-      ),
-      child: Text(
-        '로그인',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 22.0,
-        ),
-      ),
-    ),
+        )),
   );
 }
