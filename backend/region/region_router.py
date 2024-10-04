@@ -66,3 +66,19 @@ def show_info_station(station_id : int,region_db: Session = Depends(get_region_d
         "district": station.district
     }
     for station in station_data]
+
+@router.get("/subway/locker")
+def show_locker_info(station_id : int,region_db: Session = Depends(get_region_db)):
+    locker_data = region_db.query(Locker_Model).filter(Locker_Model.id == station_id).all()
+    return [
+    {
+        "id": locker.id,
+        "station_name": locker.station_name,
+        "Detailed_Location": locker.Detailed_Location,  # 보관함의 상세 위치
+        "Small": locker.Small,  # 소형 보관함 개수
+        "Medium": locker.Medium,  # 중형 보관함 개수
+        "Large": locker.Large,  # 대형 보관함 개수
+        "Extra_Large": locker.Extra_Large,  # 초대형 보관함 개수
+        "Usage_fee": locker.Usage_fee  # 보관함 사용료
+    }
+    for locker in locker_data]
