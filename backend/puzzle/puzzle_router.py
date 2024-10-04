@@ -18,6 +18,7 @@ router = APIRouter(
 
 @router.post("/create_puzzle")
 def create_puzzle(data : Puzzle,stamp_db: Session = Depends(get_stamp_db)):
+    
     for i in range(int(data.puzzle_cnt)):
         new_puzzle_info = Puzzle_info_model(
             puzzle_num = data.puzzle_num,
@@ -32,3 +33,11 @@ def create_puzzle(data : Puzzle,stamp_db: Session = Depends(get_stamp_db)):
         stamp_db.add(new_puzzle_info)
         stamp_db.commit()
     stamp_db.refresh(new_puzzle_info)
+    new_puzzle = Puzzle_model(
+        puzzle_num = data.puzzle_num,
+        puzzle_cnt = data.puzzle_cnt
+    )
+    stamp_db.add(new_puzzle)
+    stamp_db.commit()
+    stamp_db.refresh(new_puzzle)
+    return ""
