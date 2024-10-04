@@ -59,5 +59,5 @@ def show_locker_info(station_name : str,region_db: Session = Depends(get_region_
 
 @router.get("/food/list")
 def show_list_subway(district : str,region_db: Session = Depends(get_region_db)):
-    food_data = region_db.query(Food_model).filter(Food_model.district == district).all()
+    food_data = region_db.query(Food_model).filter(Food_model.District == district).all()
     return  [{"id": food.id, "name": food.name} for food in food_data]
