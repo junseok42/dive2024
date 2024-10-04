@@ -38,7 +38,7 @@ class PuzzleInfo(stamp_Base):
     id = Column(Integer, primary_key=True, index=True)
     puzzle_num = Column(Integer, index=True)
     puzzle_index = Column(Integer)
-    district = Column(String(10), index= True)
+    district = Column(String(30), index= True)
     title = Column(String(255))
     content = Column(String(255))
     address = Column(String(500))
