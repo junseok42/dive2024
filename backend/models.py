@@ -26,7 +26,7 @@ class Stamp(stamp_Base):
     description = Column(Text, nullable=True)  
     latitude = Column(Float, nullable=False)  
     longitude = Column(Float, nullable=False)  
-    district_id = Column(Integer, nullable=False)  
+    district_id = Column(Integer, nullable=False, index = True)  
     created_at = Column(DateTime, default=datetime.utcnow)
 
 # 유저 스탬프 기록 테이블 정의
@@ -60,3 +60,12 @@ class subway_Locker_info(region_Base):
     Large = Column(Integer)
     Extra_Large = Column(Integer)
     Usage_fee = Column(String(100))
+
+class house_info(region_Base):
+    __tablename__ = "house"
+    id = Column(Integer, primary_key=True, index=True)
+    type = Column(String(15), index=True)
+    name = Column(String(100), index=True)
+    cnt = Column(Integer)
+    address = Column(String(500))
+    region = Column(String(20),index=True)

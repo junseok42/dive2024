@@ -33,5 +33,5 @@ def create_new_stamp(
         raise HTTPException(status_code=403, detail="유효하지 않은 토큰 페이로드입니다.")
     
     user_info = user_db.query(User_model).filter(User_model.user_id == user_id).one_or_none()
-    model_stamp = create_stamp()
-    return {"message" : "true"}
+    model_stamp = Stamp_model()
+    
