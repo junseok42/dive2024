@@ -31,7 +31,7 @@ class UserPuzzle(stamp_Base):
     id = Column(Integer, primary_key=True, index=True)
     received_at = Column(DateTime, default=datetime.utcnow)
     puzzle_num = Column(Integer)
-    user_id = Column(Integer, index=True)
+    user_id = Column(String(30), index=True)
     puzzle_index = Column(Integer)
 
 class PuzzleInfo(stamp_Base):
