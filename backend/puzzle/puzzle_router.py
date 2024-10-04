@@ -49,6 +49,8 @@ def create_puzzle(data : Puzzle,stamp_db: Session = Depends(get_stamp_db)):
 def show_list(stamp_db: Session = Depends(get_stamp_db)):
     datas = stamp_db.query(Puzzle_model).all()
     return [{"puzzle_num" : data.puzzle_num}for data in datas]
+
+
 @router.get("/show_puzzle")
 def show_puzzle(credentials: HTTPAuthorizationCredentials = Security(security),stamp_db: Session = Depends(get_stamp_db), user_db: Session = Depends(get_userdb)):
     token = credentials.credentials
@@ -85,7 +87,7 @@ def select_puzzle(select: int, credentials: HTTPAuthorizationCredentials = Secur
         raise HTTPException(status_code=403, detail="유효하지 않은 토큰 페이로드입니다.")
     
     # 사용자 정보를 user_db에서 조회
-    user = user_db.query(User_model).filter(User_model.id == user_id).first()
+    user = user_db.query(User_model).filter(User_model.user_id == user_id).first()
     
     if not user:
         raise HTTPException(status_code=404, detail="사용자를 찾을 수 없습니다.")
