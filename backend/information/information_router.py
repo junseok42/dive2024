@@ -8,7 +8,7 @@ security = HTTPBearer()
 
 
 router = APIRouter(
-    prefix="/region",
+    prefix="/information",
 )
 # 이미지 저장 경로
 IMAGE_DIR = '../img'

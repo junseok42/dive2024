@@ -10,6 +10,7 @@ from user.user_router import router as user_router
 from puzzle.puzzle_router import router as puzzle_router
 from region.region_router import router as region_router
 from region.house_router import router as house_router
+from information.information_router import router as information_router
 
 app = FastAPI()
 
@@ -35,6 +36,7 @@ app.include_router(user_router, tags=["user"])
 app.include_router(puzzle_router, tags=["puzzle"])
 app.include_router(region_router, tags=["region"])
 app.include_router(house_router, tags=["house"])
+app.include_router(information_router, tags=["information"])
 if __name__ == "__main__":
     import uvicorn
 
