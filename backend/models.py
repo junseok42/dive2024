@@ -39,7 +39,7 @@ class UserStamp(stamp_Base):
 class subway_info(region_Base):
     __tablename__ = "station"
     id = Column(Integer, primary_key=True, index=True)
-    line = Column(Integer)
+    line = Column(String(10))
     station_name = Column(String(20), index= True)
     Meeting_Point = Column(Integer)
     Locker = Column(Integer)
@@ -49,3 +49,14 @@ class subway_info(region_Base):
     Wheelchair_Lift = Column(Integer)
     TPVI = Column(Integer)#시각장애인유도로
     URP = Column(Integer)#도시경찰대
+
+class subway_Locker_info(region_Base):
+    __tablename__ = "Locker"
+    id = Column(Integer, primary_key=True, index=True)
+    station_name = Column(String(20), index= True)
+    Detailed_Location = Column(String(100))
+    Small = Column(Integer)
+    Medium = Column(Integer)
+    Large = Column(Integer)
+    Extra_Large = Column(Integer)
+    Usage_fee = Column(String(100))

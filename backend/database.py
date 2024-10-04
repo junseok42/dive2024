@@ -21,7 +21,7 @@ user_engine = create_engine(SQLALCHEMY_DATABASE_URL_USER)
 
 user_SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=user_engine)
 stamp_SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=stamp_engine)
-region_SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=region_engine, echo= True)
+region_SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=region_engine)
 
 user_Base = declarative_base()
 stamp_Base = declarative_base()
