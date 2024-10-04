@@ -7,26 +7,17 @@ from database import get_region_db
 from models import house_info as House_model
 import csv
 security = HTTPBearer()
-
+from region.region_schema import District
 
 router = APIRouter(
     prefix="/house",
 )
 
 
-@router.post("/house")
-def set_subway(region_db: Session = Depends(get_region_db)):
-    f = open('C:/dive2024/backend/region/임대주택현황.csv','r')
-    rdr = csv.reader(f)
-    for line in rdr:
-        data = House_model(type = line[0],
-                            name = line[1],
-                            cnt = int(line[2]),
-                            address = line[3],
-                            region = (line[4].split())[1]
-                            
-        )
-        region_db.add(data)
-        region_db.commit()
-    region_db.refresh(data)
-    return {"message" : "성공"}
+
+
+@router.get("/list")
+def show_house(district: District, region_db: Session = Depends(get_region_db)):
+    datas = region_db.query(House_model).filter(House_model.region == district).all()
+    return [{"type": data.type, "name": data.name, "cnt" : data.cnt, "address" : data.address} for data in datas]
+    
