@@ -71,7 +71,7 @@ def show_puzzle(credentials: HTTPAuthorizationCredentials = Security(security),s
     
 @router.patch("/select_puzzle")
 def select_puzzle(select: int, credentials: HTTPAuthorizationCredentials = Security(security), 
-                   user_db: Session = Depends(get_user_db)):
+                   user_db: Session = Depends(get_userdb)):
     token = credentials.credentials
     
     # JWT 토큰 디코딩 및 검증
