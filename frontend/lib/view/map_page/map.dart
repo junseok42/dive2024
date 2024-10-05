@@ -36,6 +36,9 @@ class _MapScreenState extends State<MapScreen> {
     super.initState();
     regionName = Get.arguments as String; // Get.arguments에서 regionName 가져옴
     district = regionName; // 가져온 regionName을 district에 할당
+    if (district == "영도")
+      district = "영도구";
+
     fetchAllData(); // 데이터를 가져오는 함수 호출
   }
 
@@ -78,10 +81,11 @@ class _MapScreenState extends State<MapScreen> {
     });
 
     await Future.wait([
+      fetchAttractData(),
       fetchLodgmentData(),
       fetchFoodData(),
       fetchStationData(),
-      fetchAttractData()
+
     ]);
 
     // 모든 마커를 한 번에 상태로 업데이트
@@ -144,6 +148,7 @@ class _MapScreenState extends State<MapScreen> {
 
   // 숙소 데이터 가져오기
   Future<void> fetchLodgmentData() async {
+
     try {
       final response = await http.get(Uri.parse('$lodgmentUrl$district'));
       if (response.statusCode == 200) {
@@ -187,6 +192,7 @@ class _MapScreenState extends State<MapScreen> {
 
   // 음식점 데이터 가져오기
   Future<void> fetchFoodData() async {
+
     try {
       final response = await http.get(Uri.parse('$foodUrl$district'));
       if (response.statusCode == 200) {
@@ -230,6 +236,7 @@ class _MapScreenState extends State<MapScreen> {
 
   // 지하철역 데이터 가져오기
   Future<void> fetchStationData() async {
+
     try {
       final response = await http.get(Uri.parse('$stationUrl$district'));
       if (response.statusCode == 200) {
@@ -452,7 +459,7 @@ class _MapScreenState extends State<MapScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // 뒤로 가기 기능
+             // 뒤로 가기 기능
           },
         ),
       ),
