@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:frontend/view/travel_page/qr_scanner_page.dart';
 import 'package:get/get.dart';
 //레이아웃
