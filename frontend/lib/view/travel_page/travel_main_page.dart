@@ -52,7 +52,10 @@ class TravelMainPage extends StatelessWidget {
                 final MyInfoController controller = Get.put(MyInfoController());
                 // 유저 정보를 불러온 후 페이지로 이동
                 await controller.loadUserInfo();
-                Get.toNamed('/myinfo');
+                List<String?> puzzleIndices = await controller.getUserPuzzleInfo();
+                print(puzzleIndices);
+                // 퍼즐 인덱스를 arguments로 전달
+                Get.toNamed('/myinfo', arguments: puzzleIndices);
               },
             ),
           ),

@@ -57,6 +57,31 @@ class MyInfoController extends GetxController {
     }
   }
 
+Future<List<String>> getUserPuzzleInfo() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? accessToken = prefs.getString('access_token');
+
+    var response = await http.get(
+      Uri.parse('${Urls.apiUrl}puzzle/show_my_puzzle'), // 퍼즐 정보 API
+      headers: {
+        'Authorization': 'Bearer $accessToken', // 토큰을 헤더에 포함
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body) as List<dynamic>;
+
+      // JSON 리스트에서 puzzle_index 값을 String으로 추출
+      List<String> puzzleIndices =
+          data.map((puzzle) => puzzle['puzzle_index'].toString()).toList();
+
+      return puzzleIndices; // puzzle_index 리스트 반환
+    } else {
+      print('퍼즐 정보 불러오기 실패: ${response.statusCode}');
+      return [];
+    }
+  }
+
   // 사용자 이름과 아이디를 SharedPreferences에 저장하는 함수
   Future<void> saveUserInfo(String userName, String userId) async {
     final prefs = await SharedPreferences.getInstance();
