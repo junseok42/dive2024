@@ -72,7 +72,7 @@ class LoginController extends GetxController {
         // API에서 status 확인 (valid 또는 invalid)
         if (data['status'] == 'valid') {
           // access_token이 유효한 경우
-          Get.offAllNamed('/travel'); // 홈 화면으로 이동
+          Get.toNamed('/travel'); // 홈 화면으로 이동
           return true;
         } else {
           return false;
@@ -138,7 +138,13 @@ class LoginController extends GetxController {
         var accessToken = data['access_token'];
         var refreshToken = data['refresh_token'];
         await saveTokens(accessToken, refreshToken);
-        Get.offAllNamed('/travel'); // 로그인 성공 후 이동
+        var puzzle = data['puzzle'];
+        print(puzzle);
+        if (puzzle == null) {
+          decide_puzzle_dialog();
+        } else {
+          Get.offAllNamed('/travel'); // 홈 화면으로 이동
+        } // 홈 화면으로 이동
       } else {
         // 로그인 실패 처리
         Get.snackbar(
@@ -163,10 +169,200 @@ class LoginController extends GetxController {
   void togglePasswordVisibility() {
     isPasswordVisible.value = !isPasswordVisible.value;
   }
-}
 
-Future<void> saveTokens(String accessToken, String refreshToken) async {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setString('access_token', accessToken);
-  await prefs.setString('refresh_token', refreshToken);
+  void decide_puzzle_dialog() {
+    int? selectedImageIndex;
+
+    Get.dialog(StatefulBuilder(
+      builder: (BuildContext context, StateSetter setState) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          contentPadding: EdgeInsets.zero,
+          content: Container(
+            width: 370,
+            height: 320,
+            padding: EdgeInsets.symmetric(
+              vertical: 20,
+              horizontal: 10,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  '부산 원정대',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+                SizedBox(height: 15),
+                Text('부산을 탐험하며, 찾아볼 퍼즐을 세 가지 중 하나를 택하세요',
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Color(
+                          0xFF525252,
+                        )),
+                    textAlign: TextAlign.center),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedImageIndex = 0;
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: selectedImageIndex == 0
+                                ? Color(0xFF9BC2F4)
+                                : Colors.transparent,
+                            width: 3,
+                          ),
+                        ),
+                        child: Image.asset(
+                          'assets/photo/puzzle_select1.png', // 여기에 실제 이미지 경로 입력
+                          width: 90,
+                          height: 90,
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedImageIndex = 1;
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: selectedImageIndex == 1
+                                ? Color(0xFF9BC2F4)
+                                : Colors.transparent,
+                            width: 3,
+                          ),
+                        ),
+                        child: Image.asset(
+                          'assets/photo/puzzle_select1.png', // 여기에 실제 이미지 경로 입력
+                          width: 90,
+                          height: 90,
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedImageIndex = 2;
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: selectedImageIndex == 2
+                                ? Color(0xFF9BC2F4)
+                                : Colors.transparent,
+                            width: 3,
+                          ),
+                        ),
+                        child: Image.asset(
+                          'assets/photo/puzzle_select1.png', // 여기에 실제 이미지 경로 입력
+                          width: 90,
+                          height: 90,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    if (selectedImageIndex != null) {
+                      Get.toNamed('/travel'); // 다이얼로그 닫기
+                      print(selectedImageIndex);
+                      sendSelectedPuzzle(selectedImageIndex!);
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF9BC2F4), // 버튼 색상 설정
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  child: Text('선택',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      )),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    ));
+  }
+
+  Future<void> sendSelectedPuzzle(int selectedIndex) async {
+    String apiUrl = '${Urls.apiUrl}puzzle/select_puzzle?select=$selectedIndex';
+
+    try {
+      String? accessToken = await getAccessToken();
+      if (accessToken == null) {
+        Get.snackbar(
+          'Error',
+          '로그인이 필요합니다.',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        return;
+      }
+
+      var response = await http.patch(
+        Uri.parse(apiUrl),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        // 퍼즐 선택 성공 후 이동
+        Get.offAllNamed('/travel');
+        print('퍼즐 선택 성공: $selectedIndex');
+      } else {
+        print('퍼즐 선택 실패: ${response.statusCode}');
+        Get.snackbar(
+          'Error',
+          '퍼즐 선택 실패: ${response.statusCode}',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+    } catch (e) {
+      print('퍼즐 선택 중 오류 발생: $e');
+      Get.snackbar(
+        'Error',
+        '퍼즐 선택 중 오류 발생: $e',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  Future<void> saveTokens(String accessToken, String refreshToken) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('access_token', accessToken);
+    await prefs.setString('refresh_token', refreshToken);
+  }
+
+  Future<String?> getAccessToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('access_token');
+  }
 }
