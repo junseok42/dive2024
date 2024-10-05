@@ -244,49 +244,86 @@ class _TravelInformationState extends State<TravelInformation> {
   Widget buildCategoryList_2(List<Map<String, dynamic>> items) {
     return Column(
       children: items.map((item) {
-        return Container(
-          margin: EdgeInsets.symmetric(vertical: 3),
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: Color(0xFFF2F2F2),
-              width: 1,
+        return GestureDetector(
+          onTap: () {
+            showDetailDialog(
+                item['id'], item['name']); // 아이템의 'name' 값을 전달하여 다이얼로그에 사용
+          },
+          child: Container(
+            margin: EdgeInsets.symmetric(vertical: 3),
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: Color(0xFFF2F2F2),
+                width: 1,
+              ),
             ),
-          ),
-          child: Row(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(Icons.train,
-                      size: 16, color: Color(0xFF9BC2F4)), // 지하철 아이콘
-                  SizedBox(width: 10),
-                  Text(
-                    '${item['line']}: ${item['name']}', // 호선과 역 이름을 표시
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+            child: Row(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(Icons.train,
+                        size: 16, color: Color(0xFF9BC2F4)), // 지하철 아이콘
+                    SizedBox(width: 10),
+                    Text(
+                      '${item['line']}: ${item['name']}', // 호선과 역 이름을 표시
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
+                  ],
+                ),
+                Spacer(),
+                GestureDetector(
+                  onTap: () {
+                    showDetailDialog(item['id'], item['name']); // 다이얼로그 호출
+                  },
+                  child: Text(
+                    '위치 보기 >', // 더보기 버튼
+                    style: TextStyle(color: Color(0xFF929292), fontSize: 12),
                   ),
-                ],
-              ),
-              Spacer(),
-              Text(
-                '위치 보기 >', // 더보기 버튼
-                style: TextStyle(color: Color(0xFF929292), fontSize: 12),
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         );
       }).toList(),
     );
   }
 
-  void showDetailDialog(String item) {
+  void showDetailDialog(int id, String name) async {
+    // 지하철 정보를 먼저 불러옴
+    await controller.fetchSubwayInfo(id);
+    Map<String, dynamic>? selectedItem = controller.subwayinfo.firstWhere(
+        (item) => item['id'].toString() == id.toString(),
+        orElse: () => {});
+
+    // 지하철 물품 보관함 정보를 불러옴
+    await controller.fetchSubwayLocker(selectedItem['name']);
+
+    // 변수를 외부에서 선언하고, 기본값을 설정
+    String smallFee = "0";
+    String mediumFee = "0";
+    String largeFee = "0";
+    String extralargeFee = "0";
+
+    // subwaylocker 리스트가 비어있지 않을 경우에만 처리
+    if (controller.subwaylocker.isNotEmpty) {
+      Map<String, String> fee =
+          parseUsageFee(controller.subwaylocker[0]['Usage_fee']);
+
+      smallFee = fee['소'] ?? "0";
+      mediumFee = fee['중'] ?? "0";
+      largeFee = fee['대'] ?? "0";
+      extralargeFee = fee['특대'] ?? "0";
+    }
+
     Get.dialog(
       AlertDialog(
         shape: RoundedRectangleBorder(
@@ -298,7 +335,7 @@ class _TravelInformationState extends State<TravelInformation> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              '서면역 내 편의 시설',
+              '${selectedItem['name']} 내 편의 시설',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -307,18 +344,18 @@ class _TravelInformationState extends State<TravelInformation> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 15),
-            buildFacilityRow('만남의 장소', true),
-            buildFacilityRow('물품 보관소', true),
-            buildFacilityRow('포토부스', false),
-            buildFacilityRow('무인 민원 발급기', true),
-            buildFacilityRow('수유실', false),
-            buildFacilityRow('휠체어 리프트', true),
-            buildFacilityRow('시각 장애인 유도선', false),
+            buildFacilityRow('만남의 장소', selectedItem['Meeting_Point'] >= 1),
+            buildFacilityRow('물품 보관소', selectedItem['Locker'] >= 1),
+            buildFacilityRow('포토부스', selectedItem['Photo_Booth'] >= 1),
+            buildFacilityRow('무인 민원 발급기', selectedItem['ACDI'] >= 1),
+            buildFacilityRow('수유실', selectedItem['Infant_Nursing_Room'] >= 1),
+            buildFacilityRow('휠체어 리프트', selectedItem['Wheelchair_Lift'] >= 1),
+            buildFacilityRow('시각 장애인 유도선', selectedItem['TPVI'] >= 1),
             SizedBox(height: 30),
 
             // 서면역 내 물품 보관소
             Text(
-              '서면역 내 물품 보관소',
+              '${selectedItem['name']} 내 물품 보관소',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -327,10 +364,26 @@ class _TravelInformationState extends State<TravelInformation> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 15),
-            buildStorageRow('소 (9,000)', 51),
-            buildStorageRow('중 (15,900)', 15),
-            buildStorageRow('대 ()', 0),
-            buildStorageRow('특 (21,000)', 9),
+            buildStorageRow(
+                '소 ($smallFee)',
+                controller.subwaylocker.isNotEmpty
+                    ? controller.subwaylocker[0]['Small'] ?? 0
+                    : 0),
+            buildStorageRow(
+                '중 ($mediumFee)',
+                controller.subwaylocker.isNotEmpty
+                    ? controller.subwaylocker[0]['Medium'] ?? 0
+                    : 0),
+            buildStorageRow(
+                '대 ($largeFee)',
+                controller.subwaylocker.isNotEmpty
+                    ? controller.subwaylocker[0]['Large'] ?? 0
+                    : 0),
+            buildStorageRow(
+                '특대 ($extralargeFee)',
+                controller.subwaylocker.isNotEmpty
+                    ? controller.subwaylocker[0]['Extra_Large'] ?? 0
+                    : 0),
           ],
         ),
         actions: [
@@ -358,6 +411,25 @@ class _TravelInformationState extends State<TravelInformation> {
         ],
       ),
     );
+  }
+
+  Map<String, String> parseUsageFee(String feeText) {
+    // 정규식으로 각 사이즈와 금액을 매칭
+    final RegExp regex = RegExp(r'(\S+) : (\d+,?\d*)원');
+
+    // 매칭된 결과를 리스트로 변환
+    final matches = regex.allMatches(feeText);
+
+    // 결과를 맵으로 저장
+    Map<String, String> feeMap = {};
+
+    for (var match in matches) {
+      String size = match.group(1) ?? '';
+      String price = match.group(2) ?? '';
+      feeMap[size] = price;
+    }
+
+    return feeMap;
   }
 
 // 편의 시설을 위한 행 생성 함수

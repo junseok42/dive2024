@@ -11,6 +11,8 @@ class TravelController extends GetxController {
   Uint8List? imageBytes;
   List<Map<String, dynamic>> attractions = [];
   List<Map<String, dynamic>> subwaylist = [];
+  List<Map<String, dynamic>> subwayinfo = [];
+  List<Map<String, dynamic>> subwaylocker = [];
 
   Future<void> fetchImage(String regionName) async {
     try {
@@ -111,6 +113,74 @@ class TravelController extends GetxController {
           };
         }).toList();
 
+        // 이 리스트를 사용할 수 있도록 업데이트
+        update();
+      } else {
+        throw Exception('Failed to load attractions');
+      }
+    } catch (e) {
+      print('Error fetching region data: $e');
+    }
+  }
+
+  Future<void> fetchSubwayInfo(int subwayId) async {
+    try {
+      final response = await http.get(
+        Uri.parse('${Urls.apiUrl}region/subway/info?station_id=$subwayId'),
+      );
+
+      if (response.statusCode == 200) {
+        // UTF-8 디코딩 추가
+        final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
+
+        // 각 항목을 Map으로 변환하여 저장
+        subwayinfo = data.map((item) {
+          return {
+            'id': item['id'],
+            'name': item['name'],
+            'line': item['line'],
+            'Meeting_Point': item['Meeting_Point'],
+            'Locker': item['Locker'],
+            'Photo_Booth': item['Photo_Booth'],
+            'ACDI': item['ACDI'],
+            'Infant_Nursing_Room': item['Infant_Nursing_Room'],
+            'Wheelchair_Lift': item['Wheelchair_Lift'],
+            'TPVI': item['TPVI']
+          };
+        }).toList();
+        // 이 리스트를 사용할 수 있도록 업데이트
+        update();
+      } else {
+        throw Exception('Failed to load attractions');
+      }
+    } catch (e) {
+      print('Error fetching region data: $e');
+    }
+  }
+
+  Future<void> fetchSubwayLocker(String subwayName) async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+            '${Urls.apiUrl}region/subway/locker?station_name=$subwayName'),
+      );
+
+      if (response.statusCode == 200) {
+        // UTF-8 디코딩 추가
+        final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
+
+        // 각 항목을 Map으로 변환하여 저장
+        subwaylocker = data.map((item) {
+          return {
+            'id': item['id'],
+            'station_name': item['station_name'],
+            'Small': item['Small'],
+            'Medium': item['Medium'],
+            'Large': item['Large'],
+            'Extra_Large': item['Extra_Large'],
+            'Usage_fee': item['Usage_fee'],
+          };
+        }).toList();
         // 이 리스트를 사용할 수 있도록 업데이트
         update();
       } else {
