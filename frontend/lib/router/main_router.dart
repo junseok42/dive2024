@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/view/login_page/login_page.dart';
-import 'package:frontend/view/login_page/myinfo_page.dart';
-import 'package:frontend/view/login_page/signup_page.dart';
-import 'package:frontend/view/travel_page/travel_main_page.dart';
 import 'package:get/get.dart';
 //레이아웃
 import 'package:frontend/layout/main_layout.dart';
 //페이지
+import 'package:frontend/view/login_page/login_page.dart';
+import 'package:frontend/view/login_page/myinfo_page.dart';
+import 'package:frontend/view/login_page/signup_page.dart';
+import 'package:frontend/view/travel_page/travel_main_page.dart';
+import 'package:frontend/view/travel_page/travel_informaion.dart';
 
 class MainRouter {
   static final List<GetPage> routes = [
@@ -34,5 +35,8 @@ class MainRouter {
         child: TravelMainPage(),
       ),
     ),
+    GetPage(
+        name: '/travelinfo',
+        page: () => const MainLayout(child: TravelInformation())),
   ];
 }
