@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/view/travel_page/qr_scanner_page.dart';
 import 'package:get/get.dart';
 //레이아웃
 import 'package:frontend/layout/main_layout.dart';
@@ -36,7 +37,16 @@ class MainRouter {
       ),
     ),
     GetPage(
-        name: '/travelinfo',
-        page: () => const MainLayout(child: TravelInformation())),
+      name: '/travelinfo',
+      page: () => const MainLayout(
+        child: TravelInformation(),
+      ),
+    ),
+    GetPage(
+      name: '/qrscanner',
+      page: () => const MainLayout(
+        child: QRScannerPage(),
+      ),
+    ),
   ];
 }

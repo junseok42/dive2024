@@ -113,7 +113,7 @@ class TravelMainPage extends StatelessWidget {
             top: screenHeight * 0.35,
             left: screenWidth * 0.26,
             child: regionButtonH('북구', () {
-              Get.toNamed('/');
+              Get.toNamed('/qrscanner');
             }),
           ),
           Positioned(
@@ -155,7 +155,7 @@ class TravelMainPage extends StatelessWidget {
             top: screenHeight * 0.72,
             left: screenWidth * 0.46,
             child: regionButtonV('영도', () {
-              Get.toNamed('/suyeong');
+              Get.toNamed('/travelinfo');
             }),
           ),
           Positioned(
