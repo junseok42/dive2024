@@ -82,7 +82,9 @@ class FoodPlace(region_Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(30), index=True)
     District = Column(String(20),index=True)
-
+    latitude = Column(Float)
+    longitude =Column(Float)
+    content = Column(String(250))
 class PuzzleAttraction(region_Base):
     __tablename__ =  "puzzle_attraction"
     id = Column(Integer, primary_key=True, index=True)

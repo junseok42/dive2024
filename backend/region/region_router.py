@@ -90,7 +90,7 @@ def show_locker_info(station_name : str,region_db: Session = Depends(get_region_
 @router.get("/food/list")
 def show_list_subway(district : str,region_db: Session = Depends(get_region_db)):
     food_data = region_db.query(Food_model).filter(Food_model.District == district).all()
-    return  [{"id": food.id, "name": food.name} for food in food_data]
+    return  [{"id": food.id, "name": food.name, "district" : food.District, "latitude" : food.latitude, "longitude" : food.longitude,"content": food.content} for food in food_data]
 
 
 
@@ -135,7 +135,7 @@ def show_attract(disctrict_name : str,region_db: Session = Depends(get_region_db
     puzzle_AT = region_db.query(Puzzle_At_Model).filter(Puzzle_At_Model.district == disctrict_name and Puzzle_At_Model.puzzle_num == puzzle_info.current_puzzle).all()
     AT = region_db.query(At_Model).filter(At_Model.district == disctrict_name).all()
     
-    return [{"name" : at.name , "type" : True} for at in puzzle_AT] + [{"name" : at.name , "type" : False} for at in AT]
+    return [{"name" : at.name ,"address": at.address, "type" : True} for at in puzzle_AT] + [{"name" : at.name ,"address": at.address ,"type" : False} for at in AT]
 
 @router.post("/clear_puzzle")
 def clear_puzzle_api(data: ClearPuzzle, 
@@ -177,3 +177,6 @@ def show_lodgment(district: str, region_db: Session = Depends(get_region_db)):
 def show_lodgment(region_db: Session = Depends(get_region_db)):
     datas = region_db.query(ar_model).all()
     return [{"time": data.time, "type" : data.type, "fee" : data.fee} for data in datas]
+
+
+
