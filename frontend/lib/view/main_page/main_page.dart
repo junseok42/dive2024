@@ -8,7 +8,7 @@ class MainPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     // 상단 상태바의 높이를 가져옴
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    precacheImage(AssetImage('assets/main_image.png'), context);
+    precacheImage(AssetImage('assets/main_image.webp'), context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -17,7 +17,7 @@ class MainPageView extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/main_image.png'),
+                image: AssetImage('assets/main_image.webp'),
                 fit: BoxFit.cover,
               ),
             ),

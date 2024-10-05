@@ -6,7 +6,7 @@ class TravelMainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    precacheImage(AssetImage('assets/select_region.png'), context);
+    precacheImage(AssetImage('assets/select_region.webp'), context);
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
@@ -17,7 +17,7 @@ class TravelMainPage extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/select_region.png'),
+                image: AssetImage('assets/select_region.webp'),
                 fit: BoxFit.cover,
               ),
             ),

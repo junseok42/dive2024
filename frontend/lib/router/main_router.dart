@@ -13,12 +13,6 @@ class MainRouter {
     GetPage(
       name: '/',
       page: () => MainLayout(
-        child: SplashScreen(),
-      ),
-    ),
-    GetPage(
-      name: '/main',
-      page: () => const MainLayout(
         child: MainPageView(),
       ),
     ),
