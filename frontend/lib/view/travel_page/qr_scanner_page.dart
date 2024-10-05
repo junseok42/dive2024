@@ -19,6 +19,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode? result; // QR코드 결과
   QRViewController? controller;
+  bool isProcessing = false; // 중복 처리를 방지하기 위한 플래그
 
   @override
   void dispose() {
@@ -37,21 +38,28 @@ class _QRScannerPageState extends State<QRScannerPage> {
   }
 
   // QR 코드 인식 결과 처리
-  void _onQRViewCreated(QRViewController controller) {
+  void onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) async {
-      setState(() {
-        result = scanData; // QR 코드 결과 저장
-      });
-      await controller.pauseCamera(); // 카메라 일시 정지
+      if (!isProcessing) {
+        setState(() {
+          result = scanData; // QR 코드 결과 저장
+          isProcessing = true; // 중복 스캔 방지
+        });
+        await controller.pauseCamera(); // 카메라 일시 정지
 
-      // QR 코드 데이터 서버로 전송
-      await _sendQRCodeDataToServer(scanData.code);
+        // QR 코드 데이터 서버로 전송
+        await sendQRCodeDataToServer(scanData.code);
+
+        setState(() {
+          isProcessing = false; // 처리 완료 후 다시 스캔 가능
+        });
+      }
     });
   }
 
   // 서버로 QR 코드 데이터 전송
-  Future<void> _sendQRCodeDataToServer(String? qrData) async {
+  Future<void> sendQRCodeDataToServer(String? qrData) async {
     if (qrData == null) return;
 
     try {
@@ -67,7 +75,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
       );
 
       if (response.statusCode == 200) {
-        Get.offAllNamed('/info');
+        Get.toNamed('/info'); // 정상적으로 처리되면 페이지 이동
       } else {
         print('QR 처리 실패: ${response.statusCode}');
       }
@@ -101,7 +109,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
             flex: 5,
             child: QRView(
               key: qrKey,
-              onQRViewCreated: _onQRViewCreated, // QR 코드 스캔 설정
+              onQRViewCreated: onQRViewCreated, // QR 코드 스캔 설정
               overlay: QrScannerOverlayShape(
                 borderColor: Colors.blueAccent,
                 borderRadius: 10,
