@@ -54,7 +54,6 @@ class TravelMainPage extends StatelessWidget {
                 await controller.loadUserInfo();
                 List<String?> puzzleIndices =
                     await controller.getUserPuzzleInfo();
-                print(puzzleIndices);
                 // 퍼즐 인덱스를 arguments로 전달
                 Get.toNamed('/myinfo', arguments: puzzleIndices);
               },
@@ -64,112 +63,112 @@ class TravelMainPage extends StatelessWidget {
             top: screenHeight * 0.48,
             left: screenWidth * 0.01,
             child: regionButtonV('강서구', () {
-              Get.toNamed('/');
+              Get.toNamed('/travelinfo', arguments: "강서구");
             }),
           ),
           Positioned(
             top: screenHeight * 0.26,
             left: screenWidth * 0.57,
             child: regionButtonV('금정구', () {
-              Get.toNamed('/');
+              Get.toNamed('/travelinfo', arguments: "금정구");
             }),
           ),
           Positioned(
             top: screenHeight * 0.16,
             left: screenWidth * 0.8,
             child: regionButtonV('기장군', () {
-              Get.toNamed('/');
+              Get.toNamed('/travelinfo', arguments: "기장군");
             }),
           ),
           Positioned(
             top: screenHeight * 0.56,
             left: screenWidth * 0.58,
             child: regionButtonV('남구', () {
-              Get.toNamed('/');
+              Get.toNamed('/travelinfo', arguments: "남구");
             }),
           ),
           Positioned(
             top: screenHeight * 0.61,
             left: screenWidth * 0.32,
             child: regionButtonH('동구', () {
-              Get.toNamed('/');
+              Get.toNamed('/travelinfo', arguments: "동구");
             }),
           ),
           Positioned(
             top: screenHeight * 0.4,
             left: screenWidth * 0.46,
             child: regionButtonH('동래구', () {
-              Get.toNamed('/');
+              Get.toNamed('/travelinfo', arguments: "동래구");
             }),
           ),
           Positioned(
             top: screenHeight * 0.52,
             left: screenWidth * 0.33,
             child: regionButtonH('부산진구', () {
-              Get.toNamed('/');
+              Get.toNamed('/travelinfo', arguments: "부산진구");
             }),
           ),
           Positioned(
             top: screenHeight * 0.35,
             left: screenWidth * 0.26,
             child: regionButtonH('북구', () {
-              Get.toNamed('/qrscanner');
+              Get.toNamed('/travelinfo', arguments: "북구");
             }),
           ),
           Positioned(
             top: screenHeight * 0.5,
             left: screenWidth * 0.13,
             child: regionButtonH('사상구', () {
-              Get.toNamed('/');
+              Get.toNamed('/travelinfo', arguments: "사상구");
             }),
           ),
           Positioned(
             top: screenHeight * 0.66,
             left: screenWidth * 0.14,
             child: regionButtonV('사하구', () {
-              Get.toNamed('/');
+              Get.toNamed('/travelinfo', arguments: "사하구");
             }),
           ),
           Positioned(
             top: screenHeight * 0.65,
             left: screenWidth * 0.26,
             child: regionButtonV('서구', () {
-              Get.toNamed('/seogu');
+              Get.toNamed('/travelinfo', arguments: "서구");
             }),
           ),
           Positioned(
             top: screenHeight * 0.41,
             left: screenWidth * 0.78,
             child: regionButtonV('수영구', () {
-              Get.toNamed('/suyeong');
+              Get.toNamed('/travelinfo', arguments: "수영구");
             }),
           ),
           Positioned(
             top: screenHeight * 0.47,
             left: screenWidth * 0.47,
             child: regionButtonH('연제구', () {
-              Get.toNamed('/suyeong');
+              Get.toNamed('/travelinfo', arguments: "연제구");
             }),
           ),
           Positioned(
             top: screenHeight * 0.72,
             left: screenWidth * 0.46,
             child: regionButtonV('영도', () {
-              Get.toNamed('/travelinfo');
+              Get.toNamed('/travelinfo', arguments: "영도구");
             }),
           ),
           Positioned(
             top: screenHeight * 0.66,
             left: screenWidth * 0.36,
             child: regionButtonV('중구', () {
-              Get.toNamed('/suyeong');
+              Get.toNamed('/travelinfo', arguments: "중구");
             }),
           ),
           Positioned(
             top: screenHeight * 0.52,
             left: screenWidth * 0.57,
             child: regionButtonH('해운대', () {
-              Get.toNamed('/suyeong');
+              Get.toNamed('/travelinfo', arguments: "해운대구");
             }),
           ),
         ],
