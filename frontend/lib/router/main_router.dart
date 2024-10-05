@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/view/no_use/loading_page_page.dart';
 import 'package:frontend/view/login_page/login_page.dart';
 import 'package:frontend/view/login_page/myinfo_page.dart';
 import 'package:frontend/view/login_page/signup_page.dart';

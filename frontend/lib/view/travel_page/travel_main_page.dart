@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/controller/myinfo_controller.dart';
 import 'package:get/get.dart';
 
 class TravelMainPage extends StatelessWidget {
@@ -40,25 +41,19 @@ class TravelMainPage extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: statusBarHeight + 23,
-            left: 25,
-            child: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
-              color: Colors.black,
-              iconSize: 25.0,
-              onPressed: () {
-                Get.toNamed('/myinfo');
-              },
-            ),
-          ),
-          Positioned(
             top: statusBarHeight + 20,
             right: 25,
             child: IconButton(
               icon: Icon(Icons.extension_outlined),
               color: Color(0xFFFF7985),
               iconSize: 30.0,
-              onPressed: () {},
+              onPressed: () async {
+                // MyInfoController를 인스턴스화하여 유저 정보를 불러온 후 이동
+                final MyInfoController controller = Get.put(MyInfoController());
+                // 유저 정보를 불러온 후 페이지로 이동
+                await controller.loadUserInfo();
+                Get.toNamed('/myinfo');
+              },
             ),
           ),
           Positioned(

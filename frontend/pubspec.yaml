@@ -66,6 +66,7 @@ flutter:
     - assets/photo/main_image.png
     - assets/photo/login_image.png
     - assets/photo/select_region.png
+    - assets/photo/puzzle_image.png
     - assets/config/.env
 
   # An image asset can refer to one or more resolution-specific "variants", see
