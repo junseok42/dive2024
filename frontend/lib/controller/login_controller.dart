@@ -235,8 +235,8 @@ class LoginController extends GetxController {
                         ),
                         child: Image.asset(
                           'assets/photo/puzzle_select1.png', // 여기에 실제 이미지 경로 입력
-                          width: 90,
-                          height: 90,
+                          width: 85,
+                          height: 85,
                         ),
                       ),
                     ),
@@ -257,8 +257,8 @@ class LoginController extends GetxController {
                         ),
                         child: Image.asset(
                           'assets/photo/puzzle_select1.png', // 여기에 실제 이미지 경로 입력
-                          width: 90,
-                          height: 90,
+                          width: 85,
+                          height: 85,
                         ),
                       ),
                     ),
@@ -279,8 +279,8 @@ class LoginController extends GetxController {
                         ),
                         child: Image.asset(
                           'assets/photo/puzzle_select1.png', // 여기에 실제 이미지 경로 입력
-                          width: 90,
-                          height: 90,
+                          width: 85,
+                          height: 85,
                         ),
                       ),
                     ),
