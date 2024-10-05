@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
+import 'data.dart' as data;
+import 'package:shared_preferences/shared_preferences.dart';
 // 관광 지도-> 해서 페이지 바꾸고 갈 곳 띄우고(퍼즐은 다른색으로 강조) -> 식당, 숙소 띄우기, 근처 지하철역 및 편의시설 띄우기
 // 아르피나 해운대에 띄우기
 // token -> invalid 토큰
+
+final cdata = data.data;
 
 void main() {
   runApp(MyApp());
@@ -15,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '근처 정보',
+      title: '구 세부 지도',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -31,7 +34,7 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   // API URLs
-  final String district = '동래구';
+  final String district = '동래구'; // 데이터 받아서 수정해야됨
   final String lodgmentUrl =
       'http://34.47.82.36:8000/region/show_lodgment/{district_name}?district=';
   final String foodUrl =
@@ -40,8 +43,10 @@ class _MapScreenState extends State<MapScreen> {
       'http://34.47.82.36:8000/region/subway/list?district=';
   final String stationPlusUrl =
       'http://34.47.82.36:8000/region/subway/info?station_id=';
-
+  final String attractUrl =
+      'http://34.47.82.36:8000/region/attract/';
   // 데이터 리스트
+  List<dynamic> attractData = [];
   List<dynamic> lodgmentData = [];
   List<dynamic> foodData = [];
   List<dynamic> stationIds = [];
@@ -51,6 +56,7 @@ class _MapScreenState extends State<MapScreen> {
   Set<Marker> lodgmentMarkers = {};
   Set<Marker> foodMarkers = {};
   Set<Marker> stationMarkers = {};
+  Set<Marker> attractMarkers = {};
   Set<Marker> allMarkers = {};
 
   bool isLoading = true;
@@ -78,13 +84,61 @@ class _MapScreenState extends State<MapScreen> {
       fetchLodgmentData(),
       fetchFoodData(),
       fetchStationData(),
+      fetchAttractData()
     ]);
 
     // 모든 마커를 한 번에 상태로 업데이트
     setState(() {
-      allMarkers = {...lodgmentMarkers, ...foodMarkers, ...stationMarkers};
+      allMarkers = {...lodgmentMarkers, ...foodMarkers, ...stationMarkers, ...attractMarkers};
       isLoading = false;
     });
+  }
+
+  // 관광명소 데이터 가져오기
+  Future<void> fetchAttractData() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? accessToken = prefs.getString('access_token');;
+    try {
+      final response = await http.get(Uri.parse('$attractUrl$district'),
+          headers: {'Authorization': 'Bearer ${accessToken}'});
+      if (response.statusCode == 200) {
+        attractData = jsonDecode(utf8.decode(response.bodyBytes));
+        await _processAttractData();
+      } else {
+        throw Exception('Failed to load attract data.');
+      }
+    } catch (e) {
+      print('Error fetching attract data: $e');
+    }
+  }
+
+  // 관광명소 데이터 처리
+  Future<void> _processAttractData() async {
+    for (int i = 0; i < attractData.length; i++) {
+      final marker = await _fetchCoordinateForAttractItem(i);
+      attractMarkers.add(marker);
+    }
+  }
+
+  Future<Marker> _fetchCoordinateForAttractItem(int index) async {
+    final item = attractData[index];
+
+    // 문자열을 double로 파싱
+    final double lat = double.parse(cdata[district][item['name']]['위도']);
+    final double lng = double.parse(cdata[district][item['name']]['경도']);
+    print(lat);
+    print(lng);
+    final marker = Marker(
+      markerId: MarkerId('attract_${item['name']}'),
+      position: LatLng(lat, lng),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      infoWindow: InfoWindow(
+        title: item['name'],
+        snippet: '관광명소 ${item['name']}',
+      ),
+    );
+
+    return marker;
   }
 
   // 숙소 데이터 가져오기
@@ -274,7 +328,8 @@ class _MapScreenState extends State<MapScreen> {
 
     return Container(
       padding: EdgeInsets.all(16.0),
-      height: 300, width: double.infinity,
+      height: 300,
+      width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -302,7 +357,8 @@ class _MapScreenState extends State<MapScreen> {
 
     return Container(
       padding: EdgeInsets.all(16.0),
-      height: 250, width: double.infinity,
+      height: 250,
+      width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -332,7 +388,8 @@ class _MapScreenState extends State<MapScreen> {
 
     return Container(
       padding: EdgeInsets.all(16.0),
-      height: 350, width: double.infinity,
+      height: 350,
+      width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -381,6 +438,7 @@ class _MapScreenState extends State<MapScreen> {
           mapController = controller;
           if (allMarkers.isNotEmpty) {
             final firstMarker = allMarkers.first.position;
+            print(firstMarker);
             _moveCameraToPosition(firstMarker);
           }
         },
