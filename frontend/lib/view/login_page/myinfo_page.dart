@@ -64,7 +64,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
                 IconButton(
                   icon: Icon(Icons.arrow_back, color: Colors.black),
                   onPressed: () {
-                    Get.back(); // 뒤로 가기
+                    Get.toNamed('/travel'); // 뒤로 가기
                   },
                 ),
                 Text(

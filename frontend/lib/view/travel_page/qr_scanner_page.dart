@@ -67,7 +67,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
       );
 
       if (response.statusCode == 200) {
-        Get.toNamed('/myinfo');
+        Get.offAllNamed('/info');
       } else {
         print('QR 처리 실패: ${response.statusCode}');
       }
