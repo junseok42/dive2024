@@ -94,18 +94,23 @@ class LoginPageView extends StatelessWidget {
                     SizedBox(height: 20),
                     loginButton(controller), // 로그인 버튼 추가
                     SizedBox(height: 10),
-                    TextButton(
-                      onPressed: () {
-                        controller.signupButton(); // 회원가입 버튼 동작
-                      },
-                      child: Text(
-                        '회원가입',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          decoration: TextDecoration.underline,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            controller.signupButton(); // 회원가입 버튼 동작
+                          },
+                          child: Text(
+                            '회원가입',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                     Spacer(), // 아래쪽 빈 공간 채우기
                   ],

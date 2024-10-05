@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/view/loading_page/loading_page_page.dart';
 import 'package:frontend/view/login_page/login_page.dart';
+import 'package:frontend/view/login_page/signup_page.dart';
 import 'package:frontend/view/travel_page/travel_main_page.dart';
 import 'package:get/get.dart';
 //레이아웃
@@ -21,6 +22,12 @@ class MainRouter {
       name: '/login',
       page: () => MainLayout(
         child: LoginPageView(),
+      ),
+    ),
+    GetPage(
+      name: '/signup',
+      page: () => MainLayout(
+        child: SignUpPage(),
       ),
     ),
     GetPage(
