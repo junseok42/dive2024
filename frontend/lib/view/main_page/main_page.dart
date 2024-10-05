@@ -8,7 +8,7 @@ class MainPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     // 상단 상태바의 높이를 가져옴
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    precacheImage(AssetImage('assets/main_image.webp'), context);
+    precacheImage(AssetImage('assets/main_image.png'), context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -17,7 +17,7 @@ class MainPageView extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/main_image.webp'),
+                image: AssetImage('assets/main_image.png'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -54,11 +54,9 @@ class MainPageView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: 380),
-                mainButton(
-                    '🏠 주거 정보 서비스 🏠', '부산에 이사오고 싶다면? 어쩌고 저쩌고', '/travel'),
+                mainButton('🧳 여행을 떠나요', '/travel'),
                 SizedBox(height: 20),
-                mainButton(
-                    '🏠 주거 정보 서비스 🏠', '부산에 이사오고 싶다면? 어쩌고 저쩌고', '/house'),
+                mainButton('🔎 내 집은 어디에 ..', '/house'),
               ],
             ),
           ),
@@ -68,40 +66,38 @@ class MainPageView extends StatelessWidget {
   }
 }
 
-Widget mainButton(String title, String description, String route) {
-  return SizedBox(
-    width: double.infinity,
-    height: 80,
-    child: ElevatedButton(
-        onPressed: () {
-          Get.toNamed(route);
-        },
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
+Widget mainButton(String title, String route) {
+  return Center(
+    child: SizedBox(
+      width: 230,
+      height: 80,
+      child: ElevatedButton(
+          onPressed: () {
+            Get.toNamed(route);
+          },
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(40.0),
+            ),
+            side: BorderSide(color: Color(0xFF9BC2F4), width: 6.0),
+            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+            backgroundColor: Colors.white,
+            elevation: 10,
+            shadowColor: Colors.grey.withOpacity(0.5),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 15.0),
-          backgroundColor: Colors.white,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                color: Color(0xFF424242),
-                fontSize: 18.0,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  color: Color(0xFF424242),
+                  fontSize: 18.0,
+                ),
               ),
-            ),
-            Text(
-              description,
-              style: TextStyle(
-                color: Color(0xFF525252),
-                fontSize: 12.0,
-              ),
-            ),
-          ],
-        )),
+            ],
+          )),
+    ),
   );
 }
