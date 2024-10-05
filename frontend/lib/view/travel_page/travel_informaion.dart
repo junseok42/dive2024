@@ -90,13 +90,26 @@ class _TravelInformationState extends State<TravelInformation> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          '💡정보💡',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF525252),
-          ),
+        // 타이틀 및 카메라 이모티콘 추가
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '💡정보💡',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF525252),
+              ),
+            ),
+            // 우측 상단에 카메라 아이콘 추가
+            IconButton(
+              icon: Icon(Icons.camera_alt_outlined, color: Colors.black),
+              onPressed: () {
+                Get.toNamed('/qrscanner'); // 페이지 이동
+              },
+            ),
+          ],
         ),
         SizedBox(height: 10),
         Text(
