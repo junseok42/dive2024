@@ -6,3 +6,8 @@ class District(BaseModel):
     name : str
     content : str
 
+class attraction(BaseModel):
+    name : str
+    district : str
+    content : str
+    address : str

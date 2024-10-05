@@ -87,3 +87,19 @@ class FoodPlace(region_Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(30), index=True)
     District = Column(String(20),index=True)
+
+class PuzzleAttraction(region_Base):
+    __tablename__ =  "puzzle_attraction"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(30), index=True)
+    district = Column(String(20),index=True)
+    content = Column(String(250))
+    address = Column(String(500))
+
+class Attraction(region_Base):
+    __tablename__ =  "attraction"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(30), index=True)
+    district = Column(String(20),index=True)
+    content = Column(String(250))
+    address = Column(String(500))

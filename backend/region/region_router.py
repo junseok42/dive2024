@@ -3,9 +3,10 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 from sqlalchemy.orm import Session
 from database import get_region_db
-from models import subway_info as Subway_Model, subway_Locker_info as Locker_Model, FoodPlace as Food_model, District as District_Model
+from models import subway_info as Subway_Model, subway_Locker_info as Locker_Model, FoodPlace as Food_model, District as District_Model,\
+PuzzleAttraction as Puzzle_At_Model, Attraction as At_Model
 
-from region.region_schema import District
+from region.region_schema import District,attraction
 import csv
 
 
@@ -89,3 +90,34 @@ def show_locker_info(station_name : str,region_db: Session = Depends(get_region_
 def show_list_subway(district : str,region_db: Session = Depends(get_region_db)):
     food_data = region_db.query(Food_model).filter(Food_model.District == district).all()
     return  [{"id": food.id, "name": food.name} for food in food_data]
+
+
+
+@router.post("/Puzzle_Attraction")
+def add_puzzle_attraction(data : attraction,region_db: Session = Depends(get_region_db)):
+    create_at = Puzzle_At_Model(name = data.name,
+                                district = data.district,
+                                content = data.content,
+                                address = data.address)
+    region_db.add(create_at)
+    region_db.commit()
+    region_db.refresh(create_at)
+    return HTTPException(status_code=200 , detail="정상적으로 퍼즐장소가 추가되었습니다.")
+
+@router.post("/Attraction")
+def add_attraction(data : attraction,region_db: Session = Depends(get_region_db)):
+    create_at = At_Model(name = data.name,
+                                district = data.district,
+                                content = data.content,
+                                address = data.address)
+    region_db.add(create_at)
+    region_db.commit()
+    region_db.refresh(create_at)
+    return HTTPException(status_code=200 , detail="정상적으로 장소가 추가되었습니다.")
+
+@router.get("/attract/{disctrict_name}")
+def show_attract(disctrict_name : str,region_db: Session = Depends(get_region_db)):
+    puzzle_AT = region_db.query(Puzzle_At_Model).filter(Puzzle_At_Model.district == disctrict_name).all()
+    AT = region_db.query(At_Model).filter(At_Model.district == disctrict_name).all()
+    
+    return [{"name" : at.name , "type" : True} for at in puzzle_AT] + [{"name" : at.name , "type" : False} for at in AT]
