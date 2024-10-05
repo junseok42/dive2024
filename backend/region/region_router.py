@@ -186,25 +186,7 @@ def show_lodgment(region_db: Session = Depends(get_region_db)):
 
 
 
-@router.post("/subway")
-def set_subway(region_db: Session = Depends(get_region_db)):
-    f = open('C:/dive2024/backend/region/역사데이터.csv','r')
-    rdr = csv.reader(f)
-    for line in rdr:
-        data = Subway_Model(line = line[0],
-                            station_name = line[1],
-                            latitude = float(line[2]),
-                            longitude = float(line[3]),
-                            Meeting_Point = int(line[4]),
-                            Locker = int(line[5]),
-                            Photo_Booth = int(line[6]),
-                            ACDI = int(line[7]),
-                            Infant_Nursing_Room = int(line[8]),
-                            Wheelchair_Lift = int(line[9]),
-                            TPVI = int(line[10]),
-                            URP = int(line[11]),
-                            district = (line[12]))
-        region_db.add(data)
-        region_db.commit()
-    region_db.refresh(data)
-    return {"message" : "성공"}
+@router.get("/show_puzzle_area")
+def show_puzzle_area(region_db: Session = Depends(get_region_db)):
+    datas = region_db.query(Puzzle_At_Model).all()
+    return [{"district" : data.district} for data in datas]
