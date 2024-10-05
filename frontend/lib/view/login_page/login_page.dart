@@ -8,12 +8,11 @@ class LoginPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double statusBarHeight = MediaQuery.of(context).padding.top;
     precacheImage(AssetImage('assets/photo/login_image.png'), context);
 
     return Scaffold(
       backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: true, // 키보드가 올라올 때 화면 자동 조정
+      resizeToAvoidBottomInset: false, // 키보드가 올라올 때 화면 자동 조정
       body: Stack(
         children: [
           // 배경 이미지 고정
@@ -23,26 +22,12 @@ class LoginPageView extends StatelessWidget {
                 image: DecorationImage(
                   image: AssetImage('assets/photo/login_image.png'),
                   alignment: Alignment.topCenter,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fitWidth,
                 ),
               ),
             ),
           ),
           // 뒤로 가기 버튼
-          Positioned(
-            top: statusBarHeight + 5, // 상단 여백 (상태바 고려)
-            left: 5, // 좌측 여백
-            child: IconButton(
-              icon: Icon(
-                (Icons.arrow_back),
-                color: Colors.white,
-                size: 30,
-              ),
-              onPressed: () {
-                Get.back(); // 뒤로 가기 동작
-              },
-            ),
-          ),
           // 다른 UI 요소를 스크롤 가능하게 설정
           ConstrainedBox(
             constraints: BoxConstraints(
@@ -50,11 +35,12 @@ class LoginPageView extends StatelessWidget {
             ),
             child: IntrinsicHeight(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                padding: EdgeInsets.symmetric(horizontal: 40.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Spacer(), // 빈 공간 채우기
+                    SizedBox(height: 20),
                     TextField(
                       controller: controller.idTextController,
                       decoration: InputDecoration(
@@ -63,6 +49,10 @@ class LoginPageView extends StatelessWidget {
                         fillColor: Colors.white, // 텍스트 필드 배경색
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15.0),
+                          borderSide: BorderSide(
+                            color: Colors.white, // 기본 테두리 색상
+                            width: 1.0, // 테두리 두께
+                          ),
                         ),
                       ),
                     ),
@@ -77,6 +67,10 @@ class LoginPageView extends StatelessWidget {
                             fillColor: Colors.white,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15.0),
+                              borderSide: BorderSide(
+                                color: Colors.white, // 기본 테두리 색상
+                                width: 1.0, // 테두리 두께
+                              ),
                             ),
                             suffixIcon: IconButton(
                               icon: Icon(
@@ -107,6 +101,7 @@ class LoginPageView extends StatelessWidget {
                               color: Colors.white,
                               fontSize: 16,
                               decoration: TextDecoration.underline,
+                              decorationColor: Colors.white,
                             ),
                           ),
                         ),
@@ -127,7 +122,7 @@ class LoginPageView extends StatelessWidget {
 Widget loginButton(LoginController controller) {
   return SizedBox(
     width: double.infinity, // 버튼이 가로 전체 차지
-    height: 65,
+    height: 50,
     child: Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.0), // 버튼의 모서리를 둥글게 설정
@@ -148,8 +143,8 @@ Widget loginButton(LoginController controller) {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0), // 테두리 둥글게
           ),
-          side: BorderSide(color: Colors.white, width: 2.0), // 흰색 테두리
-          padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 15.0),
+          side: BorderSide(color: Colors.white, width: 4.0), // 흰색 테두리
+          padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 5.0),
           backgroundColor: Colors.transparent, // 배경 투명
         ),
         child: Text(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:frontend/view/main_page/main_page.dart';
+import 'package:frontend/view/no_use/main_page.dart';
 
 void main() {
   runApp(MyApp());
