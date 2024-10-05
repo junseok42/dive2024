@@ -67,7 +67,9 @@ def show_info_station(station_id : int,region_db: Session = Depends(get_region_d
         "Wheelchair_Lift": station.Wheelchair_Lift,
         "TPVI": station.TPVI,  # 시각 장애인 유도
         "URP": station.URP,  # 도시경찰대
-        "district": station.district
+        "district": station.district,
+        "latitude": station.latitude,
+        "longitude": station.longitude
     }
     for station in station_data]
 
@@ -138,15 +140,16 @@ def show_attract(disctrict_name : str,region_db: Session = Depends(get_region_db
     return [{"name" : at.name ,"address": at.address, "type" : True} for at in puzzle_AT] + [{"name" : at.name ,"address": at.address ,"type" : False} for at in AT]
 
 @router.post("/clear_puzzle")
-def clear_puzzle_api(data: ClearPuzzle, 
+def clear_puzzle_api(puzzle_index: int, 
                      credentials: HTTPAuthorizationCredentials = Depends(security), 
                      stamp_db: Session = Depends(get_stamp_db), 
                      user_db: Session = Depends(get_userdb)):
     # JWT 토큰 디코딩 및 사용자 검증
     user = validate_user_and_get_data(credentials, user_db)
-    
+    if puzzle_index >= 9:
+        raise HTTPException(status_code=401, detail="퍼즐번호는 0~8번까지입니다.")
     # 퍼즐 처리 함수 호출
-    process_puzzle_clearance(data, user, stamp_db)
+    process_puzzle_clearance(puzzle_index, user, stamp_db)
     return {"message": "정상적으로 퍼즐 완료 처리가 되었습니다."}
 
 def validate_user_and_get_data(credentials: HTTPAuthorizationCredentials, user_db: Session):
@@ -180,3 +183,25 @@ def show_lodgment(region_db: Session = Depends(get_region_db)):
 
 
 
+@router.post("/subway")
+def set_subway(region_db: Session = Depends(get_region_db)):
+    f = open('C:/dive2024/backend/region/역사데이터.csv','r')
+    rdr = csv.reader(f)
+    for line in rdr:
+        data = Subway_Model(line = line[0],
+                            station_name = line[1],
+                            latitude = float(line[2]),
+                            longitude = float(line[3]),
+                            Meeting_Point = int(line[4]),
+                            Locker = int(line[5]),
+                            Photo_Booth = int(line[6]),
+                            ACDI = int(line[7]),
+                            Infant_Nursing_Room = int(line[8]),
+                            Wheelchair_Lift = int(line[9]),
+                            TPVI = int(line[10]),
+                            URP = int(line[11]),
+                            district = (line[12]))
+        region_db.add(data)
+        region_db.commit()
+    region_db.refresh(data)
+    return {"message" : "성공"}

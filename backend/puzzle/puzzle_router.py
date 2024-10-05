@@ -110,7 +110,7 @@ def config_puzzle(data : ConfigPuzzle,region_db: Session = Depends(get_region_db
 def process_puzzle_clearance(data, user, stamp_db):
     puzzle_data = UserPuzzle_model(
         puzzle_num = user.current_puzzle,
-        puzzle_index = data.puzzle_index,
+        puzzle_index = data,
         user_id = user.user_id,
         received_at = datetime.now()
     )

@@ -56,6 +56,8 @@ class subway_info(region_Base):
     TPVI = Column(Integer)#시각장애인유도로
     URP = Column(Integer)#도시경찰대
     district = Column(String(10),index=True)
+    latitude = Column(Float)
+    longitude =Column(Float)
 
 class subway_Locker_info(region_Base):
     __tablename__ = "Locker"
