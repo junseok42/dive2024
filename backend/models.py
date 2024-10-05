@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, Float, Boolean
 from database import user_Base, stamp_Base, region_Base
 from datetime import datetime
 
@@ -100,3 +100,15 @@ class Attraction(region_Base):
     district = Column(String(20),index=True)
     content = Column(String(250))
     address = Column(String(500))
+
+class lodgment(region_Base):
+    __tablename__ = "lodgment"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(30), index=True)
+    district = Column(String(20),index=True)
+    latitude = Column(Float)
+    longitude =Column(Float)
+    parking = Column(Boolean)
+    locker = Column(Boolean)
+    wheel =  Column(Boolean)
+    road =  Column(Boolean)

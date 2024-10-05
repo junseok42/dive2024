@@ -4,7 +4,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from database import get_region_db,get_userdb,get_stamp_db
 from models import subway_info as Subway_Model, subway_Locker_info as Locker_Model, FoodPlace as Food_model, District as District_Model,\
-PuzzleAttraction as Puzzle_At_Model, Attraction as At_Model,User as User_model
+PuzzleAttraction as Puzzle_At_Model, Attraction as At_Model,User as User_model, lodgment as  Lodgment_model
 
 from region.region_schema import District,attraction
 import csv
@@ -166,3 +166,9 @@ def validate_user_and_get_data(credentials: HTTPAuthorizationCredentials, user_d
     
     return user
 
+
+@router.get("/show_lodgment/{district_name}")
+def show_lodgment(district: str, region_db: Session = Depends(get_region_db)):
+    datas = region_db.query(Lodgment_model).filter(Lodgment_model.district == district).all()
+    return [{"name": data.name, "district" : data.district, "latitude" : data.latitude, "longitude" : data.longitude, "parking" : data.parking,\
+             "locker" : data.locker, "wheel" : data.wheel, "road" : data.road} for data in datas]
