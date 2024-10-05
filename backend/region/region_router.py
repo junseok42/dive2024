@@ -4,7 +4,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from database import get_region_db,get_userdb,get_stamp_db
 from models import subway_info as Subway_Model, subway_Locker_info as Locker_Model, FoodPlace as Food_model, District as District_Model,\
-PuzzleAttraction as Puzzle_At_Model, Attraction as At_Model,User as User_model, lodgment as  Lodgment_model, ar_fee as ar_model
+PuzzleAttraction as Puzzle_At_Model, Attraction as At_Model,User as User_model, lodgment as  Lodgment_model, ar_fee as ar_model,UserPuzzle as UP_model
 
 from region.region_schema import District,attraction
 import csv
@@ -148,6 +148,9 @@ def clear_puzzle_api(puzzle_index: int,
     user = validate_user_and_get_data(credentials, user_db)
     if puzzle_index >= 9:
         raise HTTPException(status_code=401, detail="퍼즐번호는 0~8번까지입니다.")
+    data = stamp_db.query(UP_model).filter(UP_model.puzzle_index == puzzle_index).first()
+    if data:
+        raise HTTPException(status_code= 409 , detail="이미 처리된 퍼즐조각입니다.")
     # 퍼즐 처리 함수 호출
     process_puzzle_clearance(puzzle_index, user, stamp_db)
     return {"message": "정상적으로 퍼즐 완료 처리가 되었습니다."}
