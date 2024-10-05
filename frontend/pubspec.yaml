@@ -60,8 +60,11 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/main_image.png
+    - assets/main_image.webp
     - assets/login_image.png
+    - assets/login_image.webp
     - assets/select_region.png
+    - assets/select_region.webp
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

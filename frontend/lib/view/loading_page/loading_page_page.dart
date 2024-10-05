@@ -41,6 +41,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(AssetImage('assets/login_image.webp'), context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -48,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/login_image.png'),
+                image: AssetImage('assets/login_image.webp'),
                 fit: BoxFit.cover,
               ),
             ),
