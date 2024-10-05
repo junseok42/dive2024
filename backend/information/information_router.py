@@ -25,6 +25,7 @@ async def upload_image(file: UploadFile = File(...)):
 
 @router.get("/images/{image_name}")
 async def get_image(image_name: str):
+    image_name = image_name+".png"
     image_path = os.path.join(IMAGE_DIR, image_name)
     if os.path.exists(image_path):
         return FileResponse(image_path)
@@ -33,6 +34,4 @@ async def get_image(image_name: str):
 @router.get("/{district_name}")
 async def get_district_information(district : str,region_db: Session = Depends(get_region_db)):
     data = region_db.query(District_Model).filter(District_Model.district == district).first()
-    image_name = district+".png"
-    image_path = os.path.join(IMAGE_DIR, image_name)
-    return data.district, data.content, FileResponse(image_path)
+    return data.district, data.content
