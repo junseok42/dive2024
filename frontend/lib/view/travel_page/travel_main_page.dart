@@ -137,8 +137,8 @@ class TravelMainPage extends StatelessWidget {
             }),
           ),
           Positioned(
-            top: screenHeight * 0.41,
-            left: screenWidth * 0.78,
+            top: screenHeight * 0.52,
+            left: screenWidth * 0.57,
             child: regionButtonV('수영구', () {
               Get.toNamed('/travelinfo', arguments: "수영구");
             }),
@@ -154,7 +154,7 @@ class TravelMainPage extends StatelessWidget {
             top: screenHeight * 0.72,
             left: screenWidth * 0.46,
             child: regionButtonV('영도', () {
-              Get.toNamed('/travelinfo', arguments: "영도구");
+              Get.toNamed('/travelinfo', arguments: "영도");
             }),
           ),
           Positioned(
@@ -165,8 +165,8 @@ class TravelMainPage extends StatelessWidget {
             }),
           ),
           Positioned(
-            top: screenHeight * 0.52,
-            left: screenWidth * 0.57,
+            top: screenHeight * 0.41,
+            left: screenWidth * 0.78,
             child: regionButtonH('해운대', () {
               Get.toNamed('/travelinfo', arguments: "해운대구");
             }),
