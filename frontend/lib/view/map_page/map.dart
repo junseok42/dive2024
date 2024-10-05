@@ -9,8 +9,6 @@ import 'package:get/get.dart';
 final cdata = data.data;
 
 class Maps extends StatelessWidget {
-  const Maps({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,8 +22,6 @@ class Maps extends StatelessWidget {
 }
 
 class MapScreen extends StatefulWidget {
-  const MapScreen({super.key});
-
   @override
   _MapScreenState createState() => _MapScreenState();
 }
@@ -40,9 +36,33 @@ class _MapScreenState extends State<MapScreen> {
     super.initState();
     regionName = Get.arguments as String; // Get.arguments에서 regionName 가져옴
     district = regionName; // 가져온 regionName을 district에 할당
-    if (district == "영도") district = "영도구";
-
     fetchAllData(); // 데이터를 가져오는 함수 호출
+
+
+  }
+
+
+
+  //다이얼로그출력
+  showar() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('부산도시공사 아르피나로 놀러오세요 ~'),
+          scrollable: true,
+          content: Column(children: [Text('주소 : 부산광역시 해운대구 해운대해변로 35, 부산도시공사 아르피나\n    부산도시공사가 운영하는 아름답게 피어나다라는 뜻의 아르피나는 지리적으로 해운대, 광안리, 부산전시컨벤션센터(BEXCO), 센텀시티의 중앙에 위치하고 있습니다. 누구나 편안하게 이용할 수 있는 깨끗한 숙박시설과 연회장, 스포츠센터등 다양한 부대시설을 갖추고 있으니 꼭 놀러오세요!'),Text('<숙박정보>'),
+            Text(' 주중/ 2인 침대 / 55000\n주중 / 3인 침대 / 66000\n주중/ 4인 침대 / 77000\n주중 / 4인 온돌 / 77000\n주중 / 6인 침대(유스룸) / 90000\n주중 / 8인 온돌(유스룸) / 120000\n주중 / 5인 콘도 / 110000\n주말 / 2인 침대 / 99000\n주말 / 3인 침대 / 110000\n주말 / 4인 침대 / 110000\n주말 / 4인 온돌 / 121000\n주말 / 6인 침대(유스룸) / 99000\n주말 / 8인 온돌(유스룸) / 120000\n주말 / 5인 콘도 / 165000\n성수기 주중 / 2인 침대 / 110000\n성수기 주중 / 3인 침대 / 121000\n성수기 주중 / 4인 침대 / 132000\n성수기 주중 / 4인 온돌 / 132000\n성수기 주중 / 6인 침대(유스룸) / 90000\n성수기 주중 / 8인 온돌(유스룸) / 120000\n성수기 주중 / 5인 콘도 / 187000\n성수기 주말 / 2인 침대 / 143000\n성수기 주말 / 3인 침대 / 154000\n성수기 주말 / 4인 침대 / 165000\n성수기 주말 / 4인 온돌 / 165000\n성수기 주말 / 6인 침대(유스룸) / 90000\n성수기 주말 / 8인 온돌(유스룸) / 120000\n성수기 주말 / 5인 콘도 / 220000')],
+          ),
+          actions: [
+            TextButton(
+              child: Text('꼭 찾아갈게요 ~'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   final String lodgmentUrl =
@@ -72,7 +92,7 @@ class _MapScreenState extends State<MapScreen> {
   GoogleMapController? mapController;
 
   // 초기 카메라 위치
-  final CameraPosition _initialPosition = CameraPosition(
+  CameraPosition _initialPosition = CameraPosition(
     target: LatLng(35.2333798, 129.0798453),
     zoom: 14,
   );
@@ -88,6 +108,8 @@ class _MapScreenState extends State<MapScreen> {
       fetchLodgmentData(),
       fetchFoodData(),
       fetchStationData(),
+
+
     ]);
 
     // 모든 마커를 한 번에 상태로 업데이트
@@ -108,7 +130,7 @@ class _MapScreenState extends State<MapScreen> {
     String? accessToken = prefs.getString('access_token');
     try {
       final response = await http.get(Uri.parse('$attractUrl$district'),
-          headers: {'Authorization': 'Bearer $accessToken'});
+          headers: {'Authorization': 'Bearer ${accessToken}'});
       if (response.statusCode == 200) {
         attractData = jsonDecode(utf8.decode(response.bodyBytes));
         await _processAttractData();
@@ -150,6 +172,7 @@ class _MapScreenState extends State<MapScreen> {
 
   // 숙소 데이터 가져오기
   Future<void> fetchLodgmentData() async {
+
     try {
       final response = await http.get(Uri.parse('$lodgmentUrl$district'));
       if (response.statusCode == 200) {
@@ -179,7 +202,8 @@ class _MapScreenState extends State<MapScreen> {
     final marker = Marker(
       markerId: MarkerId('lodgment_${item['name']}'),
       position: LatLng(lat!, lng!),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+      icon:
+      BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
       infoWindow: InfoWindow(
         title: item['name'],
         snippet: '숙소 정보 보기',
@@ -192,6 +216,7 @@ class _MapScreenState extends State<MapScreen> {
 
   // 음식점 데이터 가져오기
   Future<void> fetchFoodData() async {
+
     try {
       final response = await http.get(Uri.parse('$foodUrl$district'));
       if (response.statusCode == 200) {
@@ -221,7 +246,8 @@ class _MapScreenState extends State<MapScreen> {
     final marker = Marker(
       markerId: MarkerId('${item['name']}'),
       position: LatLng(lat!, lng!),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
+      icon:
+      BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
       infoWindow: InfoWindow(
         title: item['name'],
         snippet: '음식점 정보 보기',
@@ -234,11 +260,12 @@ class _MapScreenState extends State<MapScreen> {
 
   // 지하철역 데이터 가져오기
   Future<void> fetchStationData() async {
+
     try {
       final response = await http.get(Uri.parse('$stationUrl$district'));
       if (response.statusCode == 200) {
         List<dynamic> stationIdData =
-            jsonDecode(utf8.decode(response.bodyBytes));
+        jsonDecode(utf8.decode(response.bodyBytes));
         for (int i = 0; i < stationIdData.length; i++) {
           stationIds.add(stationIdData[i]["id"]);
         }
@@ -259,7 +286,7 @@ class _MapScreenState extends State<MapScreen> {
         final response = await http.get(Uri.parse('$stationPlusUrl$id'));
         if (response.statusCode == 200) {
           List<dynamic> stationDataResponse =
-              jsonDecode(utf8.decode(response.bodyBytes));
+          jsonDecode(utf8.decode(response.bodyBytes));
           if (stationDataResponse.isNotEmpty) {
             Map<String, dynamic> stationData = stationDataResponse[0];
             stationDataList.add(stationData);
@@ -452,54 +479,55 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white, // AppBar 배경을 흰색으로 설정
-        elevation: 0, // AppBar의 그림자 제거
         title: Text('구 맛집, 관광지 및 역사 지도'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,
-              color: Colors.black), // 아이콘 색상 흰색에서 검정색으로 변경
+          icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Get.back(); // 뒤로 가기 기능
+             // 뒤로 가기 기능
           },
         ),
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : Column(
+        children: [
+          // 레전드 표시 영역
+          Container(
+            padding: EdgeInsets.all(8.0),
+            color: Colors.white,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                // 레전드 표시 영역
-                Container(
-                  padding: EdgeInsets.all(8.0),
-                  color: Colors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildLegendItem(
-                          hue: BitmapDescriptor.hueRed, text: '관광명소'),
-                      _buildLegendItem(
-                          hue: BitmapDescriptor.hueOrange, text: '음식점'),
-                      _buildLegendItem(
-                          hue: BitmapDescriptor.hueViolet, text: '숙소'),
-                      _buildLegendItem(
-                          hue: BitmapDescriptor.hueGreen, text: '지하철역'),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: GoogleMap(
-                    onMapCreated: (GoogleMapController controller) {
-                      mapController = controller;
-                      if (allMarkers.isNotEmpty) {
-                        final firstMarker = allMarkers.first.position;
-                        _moveCameraToPosition(firstMarker);
-                      }
-                    },
-                    initialCameraPosition: _initialPosition,
-                    markers: allMarkers,
-                  ),
-                ),
+                _buildLegendItem(
+                    hue: BitmapDescriptor.hueRed, text: '관광명소'),
+                _buildLegendItem(
+                    hue: BitmapDescriptor.hueOrange, text: '음식점'),
+                _buildLegendItem(
+                    hue: BitmapDescriptor.hueViolet, text: '숙소'),
+                _buildLegendItem(
+                    hue: BitmapDescriptor.hueGreen, text: '지하철역'),
               ],
             ),
+          ),
+          Expanded(
+            child: GoogleMap(
+              onMapCreated: (GoogleMapController controller) {
+                mapController = controller;
+                if (allMarkers.isNotEmpty) {
+                  final firstMarker = allMarkers.first.position;
+                  _moveCameraToPosition(firstMarker);
+                }
+                if (district == "해운대구")
+                  //아르피나 광고
+                  showar();
+
+              },
+              initialCameraPosition: _initialPosition,
+              markers: allMarkers,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
