@@ -11,3 +11,5 @@ class attraction(BaseModel):
     district : str
     content : str
     address : str
+    puzzle_num : int
+    puzzle_index : int

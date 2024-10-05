@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Text
+from sqlalchemy import Column, Integer, String, DateTime
 from database import user_Base, stamp_Base, region_Base
 from datetime import datetime
 
@@ -41,11 +41,6 @@ class PuzzleInfo(stamp_Base):
     id = Column(Integer, primary_key=True, index=True)
     puzzle_num = Column(Integer, index=True)
     puzzle_index = Column(Integer)
-    district = Column(String(30), index= True)
-    title = Column(String(255))
-    content = Column(String(255))
-    address = Column(String(500))
-
 
 class subway_info(region_Base):
     __tablename__ = "station"
@@ -95,6 +90,8 @@ class PuzzleAttraction(region_Base):
     district = Column(String(20),index=True)
     content = Column(String(250))
     address = Column(String(500))
+    puzzle_num = Column(Integer)
+    puzzle_index = Column(Integer)
 
 class Attraction(region_Base):
     __tablename__ =  "attraction"

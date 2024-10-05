@@ -2,10 +2,10 @@ from fastapi import APIRouter, HTTPException, Depends, Security
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 from sqlalchemy.orm import Session
-from database import get_userdb,get_stamp_db
+from database import get_userdb,get_stamp_db,get_region_db
 from models import subway_info as Subway_Model, subway_Locker_info as Locker_Model,\
       Puzzle as Puzzle_model, PuzzleInfo as Puzzle_info_model, UserPuzzle as UserPuzzle_model,\
-      User as User_model
+      User as User_model, PuzzleAttraction as PuzzleAt_model
 
 from region.region_schema import District  
 from puzzle.ppuzzle_schema import Puzzle, ConfigPuzzle, ClearPuzzle
@@ -26,10 +26,6 @@ def create_puzzle(data : Puzzle,stamp_db: Session = Depends(get_stamp_db)):
         new_puzzle_info = Puzzle_info_model(
             puzzle_num = data.puzzle_num,
             puzzle_index=i,
-            district=f"지역이름",
-            title=f"장소이름",
-            content=f"장소설명",
-            address=f"장소주소"
         )
         
         # 새로운 퍼즐 정보를 데이터베이스에 추가
@@ -52,7 +48,8 @@ def show_list(stamp_db: Session = Depends(get_stamp_db)):
 
 
 @router.get("/show_puzzle")
-def show_puzzle(credentials: HTTPAuthorizationCredentials = Security(security),stamp_db: Session = Depends(get_stamp_db), user_db: Session = Depends(get_userdb)):
+def show_puzzle(credentials: HTTPAuthorizationCredentials = Security(security),stamp_db: Session = Depends(get_stamp_db)
+                , user_db: Session = Depends(get_userdb),region_db: Session = Depends(get_region_db)):
     token = credentials.credentials
     
     try:
@@ -68,8 +65,8 @@ def show_puzzle(credentials: HTTPAuthorizationCredentials = Security(security),s
     if puzzle_info.current_puzzle == None:
         return HTTPException(status_code=404, detail="퍼즐선택이 되지않았습니다.")
     else:
-        datas = stamp_db.query(Puzzle_info_model).filter(Puzzle_info_model.puzzle_num == puzzle_info.current_puzzle).all()
-        return [{"puzzle_indexd": data.puzzle_index, "district": data.district, "title" : data.title, "content" : data.content, "address" : data.address} for data in datas]
+        datas = region_db.query(PuzzleAt_model).filter(PuzzleAt_model.puzzle_num == puzzle_info.current_puzzle).all()
+        return [{"puzzle_indexd": data.puzzle_index, "district": data.district, "title" : data.name, "content" : data.content, "address" : data.address} for data in datas]
     
 @router.patch("/select_puzzle")
 def select_puzzle(select: int, credentials: HTTPAuthorizationCredentials = Security(security), 
@@ -110,30 +107,16 @@ def config_puzzle(data : ConfigPuzzle,stamp_db: Session = Depends(get_stamp_db))
     stamp_db.commit()
     return {"message": "선택한 퍼즐이 업데이트되었습니다."}
 
-@router.post("/clear_puzzle")
-def clear_puzzle(data : ClearPuzzle, credentials: HTTPAuthorizationCredentials = Security(security),
-                 stamp_db: Session = Depends(get_stamp_db),
-                 user_db: Session = Depends(get_userdb)):
-    token = credentials.credentials
-    
-    # JWT 토큰 디코딩 및 검증
-    try:
-        payload = decode_jwt(token)
-    except Exception as e:
-        raise HTTPException(status_code=403, detail="유효하지 않은 토큰입니다.")
-    
-    user_id = payload.get("sub")
-    if not user_id:
-        raise HTTPException(status_code=403, detail="유효하지 않은 토큰 페이로드입니다.")
-    user = user_db.query(User_model).filter(User_model.user_id == user_id).first()
-    data = UserPuzzle_model(puzzle_num = user.current_puzzle,
-                            puzzle_index = data.puzzle_index,
-                            user_id = user_id,
-                            received_at = datetime.now())
-    stamp_db.add(data)
+def process_puzzle_clearance(data, user, stamp_db):
+    puzzle_data = UserPuzzle_model(
+        puzzle_num = user.current_puzzle,
+        puzzle_index = data.puzzle_index,
+        user_id = user.user_id,
+        received_at = datetime.now()
+    )
+    stamp_db.add(puzzle_data)
     stamp_db.commit()
-    stamp_db.refresh(data)
-    return HTTPException(status_code=200, detail="정상적으로 퍼즐완료처리가 되었습니다.")
+    stamp_db.refresh(puzzle_data)
 
 @router.get("/show_my_puzzle")
 def show_my_puzzle(credentials: HTTPAuthorizationCredentials = Security(security),
