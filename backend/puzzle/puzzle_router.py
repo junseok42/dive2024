@@ -98,13 +98,13 @@ def select_puzzle(select: int, credentials: HTTPAuthorizationCredentials = Secur
     return {"message": "퍼즐이 선택되었습니다.", "selected_puzzle": select}
 
 @router.patch("/config_puzzle")
-def config_puzzle(data : ConfigPuzzle,stamp_db: Session = Depends(get_stamp_db)):
-    config = stamp_db.query(Puzzle_info_model).filter(Puzzle_info_model.puzzle_index == data.puzzle_index and Puzzle_info_model.puzzle_num == data.puzzle_num).first()
+def config_puzzle(data : ConfigPuzzle,region_db: Session = Depends(get_region_db)):
+    config = region_db.query(PuzzleAt_model).filter(PuzzleAt_model.puzzle_index == data.puzzle_index and PuzzleAt_model.puzzle_num == data.puzzle_num).first()
     config.district = data.district
-    config.title = data.title
+    config.name = data.title
     config.content = data.content
     config.address = data.address
-    stamp_db.commit()
+    region_db.commit()
     return {"message": "선택한 퍼즐이 업데이트되었습니다."}
 
 def process_puzzle_clearance(data, user, stamp_db):
