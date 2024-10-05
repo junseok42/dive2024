@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class MyInfoPage extends StatefulWidget {
   const MyInfoPage({super.key});
@@ -43,8 +44,12 @@ class _MyInfoPageState extends State<MyInfoPage> {
   Future<void> loadUserInfo() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      userName = prefs.getString('user_name') ?? '사용자 이름';
-      userId = prefs.getString('user_id') ?? '아이디';
+      userName = prefs.getString('user_name') != null
+          ? utf8.decode(prefs.getString('user_name')!.codeUnits)
+          : '사용자 이름'; // 없을 경우 '사용자 이름'으로 설정
+      userId = prefs.getString('user_id') != null
+          ? utf8.decode(prefs.getString('user_id')!.codeUnits)
+          : '아이디'; // 없을 경우 '아이디'로 설정
     });
   }
 
@@ -62,7 +67,8 @@ class _MyInfoPageState extends State<MyInfoPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  icon: Icon(Icons.arrow_back, color: Colors.black),
+                  icon:
+                      Icon(Icons.arrow_back_ios, color: Colors.black, size: 25),
                   onPressed: () {
                     Get.toNamed('/travel'); // 뒤로 가기
                   },
@@ -104,17 +110,18 @@ class _MyInfoPageState extends State<MyInfoPage> {
                     itemBuilder: (context, index) {
                       return isCovered[index]
                           ? Container(
-                              color: Colors.brown.withOpacity(0.8), // 덮는 색상
-                              child: Center(
-                                child: Text(
-                                  '${index + 1}', // 조각 번호 표시
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
+                              color:
+                                  Color(0xFF676767).withOpacity(0.9), // 덮는 색상
+                              // child: Center(
+                              //   child: Text(
+                              //     '${index + 1}', // 조각 번호 표시
+                              //     style: TextStyle(
+                              //       fontSize: 24,
+                              //       color: Colors.white,
+                              //       fontWeight: FontWeight.bold,
+                              //     ),
+                              //   ),
+                              // ),
                             )
                           : SizedBox.shrink(); // 가려지지 않은 조각은 빈 공간
                     },
@@ -122,17 +129,99 @@ class _MyInfoPageState extends State<MyInfoPage> {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 25),
             // 퍼즐 진행 상태 텍스트
             Text(
-              '퍼즐 완성까지 ${isCovered.where((cover) => cover).length}조각 남았어요',
+              '🧩 퍼즐 완성까지 ${isCovered.where((cover) => cover).length}조각 남았어요',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
-                color: Colors.black,
+                color: Color(0xFF525252),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 25),
+            SizedBox(
+              height: 40, // 행부기의 높이를 설정
+              child: ListView(
+                scrollDirection: Axis.horizontal, // 가로 스크롤로 설정
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(35),
+                        border: Border.all(
+                          color: Color(0xFFEDEDED), // 테두리 색상
+                          width: 2,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '🔒 하트모래 행부기',
+                            style: TextStyle(
+                                color: Color(0xFF495057), fontSize: 14),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(35),
+                        border: Border.all(
+                          color: Color(0xFF95DF8C), // 테두리 색상
+                          width: 2,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '✔️ 광안리 행부기',
+                            style: TextStyle(
+                                color: Color(0xFF495057), fontSize: 14),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(35),
+                        border: Border.all(
+                          color: Color(0xFFEDEDED), // 테두리 색상
+                          width: 2,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '🔒 기본 행부기',
+                            style: TextStyle(
+                                color: Color(0xFF495057), fontSize: 14),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(height: 40),
             // 사용자 정보
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -142,26 +231,26 @@ class _MyInfoPageState extends State<MyInfoPage> {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: Color(0xFF525252),
                   ),
                 ),
               ],
             ),
+            SizedBox(height: 10),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   '아이디',
                   style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey,
+                    fontSize: 20,
+                    color: Colors.black,
                   ),
                 ),
-                SizedBox(width: 20),
                 Text(
                   userId,
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
@@ -170,8 +259,9 @@ class _MyInfoPageState extends State<MyInfoPage> {
             ),
             SizedBox(height: 20),
             // 로그아웃 버튼
+            Spacer(),
             Align(
-              alignment: Alignment.bottomRight,
+              alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () async {
                   await logout(); // 로그아웃 함수 호출
@@ -181,10 +271,11 @@ class _MyInfoPageState extends State<MyInfoPage> {
                   style: TextStyle(
                     color: Colors.red,
                     fontSize: 16,
+                    decoration: TextDecoration.underline,
                   ),
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),
