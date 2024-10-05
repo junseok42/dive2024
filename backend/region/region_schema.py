@@ -4,4 +4,5 @@ from typing import Optional
 
 class District(BaseModel):
     name : str
+    content : str
 

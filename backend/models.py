@@ -16,7 +16,9 @@ class User(user_Base):
 class District(region_Base):
     __tablename__ = "districts"
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(50), nullable=False) 
+    district = Column(String(50), nullable=False, index=True)
+    content = Column(String(250), nullable=False)
+     
 
 # Stamp 테이블 정의
 class Puzzle(stamp_Base):

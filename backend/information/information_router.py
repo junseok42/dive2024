@@ -1,8 +1,11 @@
-from fastapi import APIRouter, File, UploadFile
+from fastapi import APIRouter, File, UploadFile,Depends
 from fastapi.responses import FileResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import os
+from sqlalchemy.orm import Session
+from database import get_region_db
 
+from models import District as District_Model
 
 security = HTTPBearer()
 
@@ -27,3 +30,9 @@ async def get_image(image_name: str):
         return FileResponse(image_path)
     return {"error": "Image not found"}
 
+@router.get("/{district_name}")
+async def get_district_information(district : str,region_db: Session = Depends(get_region_db)):
+    data = region_db.query(District_Model).filter(District_Model.district == district).first()
+    image_name = district+".png"
+    image_path = os.path.join(IMAGE_DIR, image_name)
+    return data.district, data.content, FileResponse(image_path)
