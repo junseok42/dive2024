@@ -50,11 +50,12 @@ class SignUpPage extends StatelessWidget {
             ),
             child: IntrinsicHeight(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                padding: EdgeInsets.symmetric(horizontal: 40.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Spacer(), // 빈 공간 채우기
+                    SizedBox(height: 70),
                     TextField(
                       controller: controller.nameTextController,
                       decoration: InputDecoration(
@@ -63,6 +64,10 @@ class SignUpPage extends StatelessWidget {
                         fillColor: Colors.white, // 텍스트 필드 배경색
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15.0),
+                          borderSide: BorderSide(
+                            color: Colors.white, // 기본 테두리 색상
+                            width: 1.0, // 테두리 두께
+                          ),
                         ),
                       ),
                     ),
@@ -75,6 +80,10 @@ class SignUpPage extends StatelessWidget {
                         fillColor: Colors.white, // 텍스트 필드 배경색
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15.0),
+                          borderSide: BorderSide(
+                            color: Colors.white, // 기본 테두리 색상
+                            width: 1.0, // 테두리 두께
+                          ),
                         ),
                       ),
                     ),
@@ -89,6 +98,10 @@ class SignUpPage extends StatelessWidget {
                             fillColor: Colors.white,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15.0),
+                              borderSide: BorderSide(
+                                color: Colors.white, // 기본 테두리 색상
+                                width: 1.0, // 테두리 두께
+                              ),
                             ),
                             suffixIcon: IconButton(
                               icon: Icon(
@@ -114,6 +127,10 @@ class SignUpPage extends StatelessWidget {
                             fillColor: Colors.white,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15.0),
+                              borderSide: BorderSide(
+                                color: Colors.white, // 기본 테두리 색상
+                                width: 1.0, // 테두리 두께
+                              ),
                             ),
                             suffixIcon: IconButton(
                               icon: Icon(
@@ -136,7 +153,7 @@ class SignUpPage extends StatelessWidget {
                           style: TextStyle(color: Colors.red),
                         )),
                     SizedBox(height: 10),
-                    loginButton(controller), // 회원가입 버튼 추가
+                    signupButton(controller), // 회원가입 버튼 추가
                     Spacer(), // 아래쪽 빈 공간 채우기
                   ],
                 ),
@@ -149,10 +166,10 @@ class SignUpPage extends StatelessWidget {
   }
 }
 
-Widget loginButton(SignupController controller) {
+Widget signupButton(SignupController controller) {
   return SizedBox(
     width: double.infinity, // 버튼이 가로 전체 차지
-    height: 65,
+    height: 50,
     child: Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.0), // 버튼의 모서리를 둥글게 설정
@@ -175,8 +192,8 @@ Widget loginButton(SignupController controller) {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0), // 테두리 둥글게
           ),
-          side: BorderSide(color: Colors.white, width: 2.0), // 흰색 테두리
-          padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 15.0),
+          side: BorderSide(color: Colors.white, width: 4.0), // 흰색 테두리
+          padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 5.0),
           backgroundColor: Colors.transparent, // 배경 투명
         ),
         child: Text(
