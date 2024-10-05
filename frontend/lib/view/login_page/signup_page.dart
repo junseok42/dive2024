@@ -55,97 +55,177 @@ class SignUpPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Spacer(), // 빈 공간 채우기
-                    SizedBox(height: 70),
-                    TextField(
-                      controller: controller.nameTextController,
-                      decoration: InputDecoration(
-                        labelText: '이름',
-                        filled: true,
-                        fillColor: Colors.white, // 텍스트 필드 배경색
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                          borderSide: BorderSide(
-                            color: Colors.white, // 기본 테두리 색상
-                            width: 1.0, // 테두리 두께
+                    SizedBox(height: 120),
+                    Container(
+                      height: 85,
+                      width: double.infinity,
+                      padding: EdgeInsets.only(left: 15, top: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '이름',
+                            style: TextStyle(
+                              fontSize: 14, // 텍스트 크기
+                              color: Color(0xFF676767), // 텍스트 색상
+                            ),
                           ),
-                        ),
+                          SizedBox(height: 5),
+                          TextField(
+                            controller: controller.nameTextController,
+                            decoration: InputDecoration(
+                              hintText: '이름 입력',
+                              hintStyle: TextStyle(
+                                  color: Color(0xFFC4C4C4), fontSize: 14),
+                              filled: true,
+                              fillColor: Colors.white, // 텍스트 필드 배경색
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.zero,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(height: 20),
-                    TextField(
-                      controller: controller.idTextController,
-                      decoration: InputDecoration(
-                        labelText: '아이디',
-                        filled: true,
-                        fillColor: Colors.white, // 텍스트 필드 배경색
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                          borderSide: BorderSide(
-                            color: Colors.white, // 기본 테두리 색상
-                            width: 1.0, // 테두리 두께
+                    SizedBox(height: 10),
+                    Container(
+                      height: 85,
+                      width: double.infinity,
+                      padding: EdgeInsets.only(left: 15, top: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '아이디',
+                            style: TextStyle(
+                              fontSize: 14, // 텍스트 크기
+                              color: Color(0xFF676767), // 텍스트 색상
+                            ),
                           ),
-                        ),
+                          SizedBox(height: 5),
+                          TextField(
+                            controller: controller.idTextController,
+                            decoration: InputDecoration(
+                              hintText: '아이디 입력',
+                              hintStyle: TextStyle(
+                                  color: Color(0xFFC4C4C4), fontSize: 14),
+                              filled: true,
+                              fillColor: Colors.white, // 텍스트 필드 배경색
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.zero,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(height: 20),
-                    Obx(() => TextField(
-                          controller: controller.pwTextController,
-                          obscureText:
-                              !controller.isPasswordVisible.value, // 비밀번호 숨김 처리
-                          decoration: InputDecoration(
-                            labelText: '비밀번호',
-                            filled: true,
-                            fillColor: Colors.white,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                              borderSide: BorderSide(
-                                color: Colors.white, // 기본 테두리 색상
-                                width: 1.0, // 테두리 두께
-                              ),
-                            ),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                controller.isPasswordVisible.value
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                              ),
-                              onPressed: () {
-                                controller
-                                    .togglePasswordVisibility(); // 비밀번호 표시 전환
-                              },
+                    SizedBox(height: 10),
+                    Container(
+                      height: 85,
+                      width: double.infinity,
+                      padding: EdgeInsets.only(left: 15, top: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '비밀번호',
+                            style: TextStyle(
+                              fontSize: 14, // 텍스트 크기
+                              color: Color(0xFF676767), // 텍스트 색상
                             ),
                           ),
-                        )),
-                    SizedBox(height: 20),
-                    Obx(() => TextField(
-                          controller: controller.pwConfirmTextController,
-                          obscureText:
-                              !controller.isPasswordVisible.value, // 비밀번호 숨김 처리
-                          decoration: InputDecoration(
-                            labelText: '비밀번호 확인',
-                            filled: true,
-                            fillColor: Colors.white,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                              borderSide: BorderSide(
-                                color: Colors.white, // 기본 테두리 색상
-                                width: 1.0, // 테두리 두께
-                              ),
-                            ),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                controller.isPasswordVisible.value
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                              ),
-                              onPressed: () {
-                                controller
-                                    .togglePasswordVisibility(); // 비밀번호 표시 전환
-                              },
+                          SizedBox(height: 5),
+                          Obx(() => TextField(
+                                controller: controller.pwTextController,
+                                obscureText: !controller
+                                    .isPasswordVisible.value, // 비밀번호 숨김 처리
+                                decoration: InputDecoration(
+                                  hintText: '비밀번호 입력',
+                                  hintStyle: TextStyle(
+                                      color: Color(0xFFC4C4C4), fontSize: 14),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  border: InputBorder.none,
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      controller.isPasswordVisible.value
+                                          ? Icons.visibility
+                                          : Icons.visibility_off,
+                                    ),
+                                    onPressed: () {
+                                      controller
+                                          .togglePasswordVisibility(); // 비밀번호 표시 전환
+                                    },
+                                  ),
+                                  contentPadding: EdgeInsets.only(top: 8),
+                                ),
+                              )),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      height: 85,
+                      width: double.infinity,
+                      padding: EdgeInsets.only(left: 15, top: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '비밀번호 확인',
+                            style: TextStyle(
+                              fontSize: 14, // 텍스트 크기
+                              color: Color(0xFF676767), // 텍스트 색상
                             ),
                           ),
-                        )),
-                    SizedBox(height: 20),
+                          SizedBox(height: 5),
+                          Obx(() => TextField(
+                                controller: controller.pwConfirmTextController,
+                                obscureText: !controller
+                                    .isPasswordVisible.value, // 비밀번호 숨김 처리
+                                decoration: InputDecoration(
+                                  hintText: '비밀번호 재입력',
+                                  hintStyle: TextStyle(
+                                      color: Color(0xFFC4C4C4), fontSize: 14),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  border: InputBorder.none,
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      controller.isPasswordVisible.value
+                                          ? Icons.visibility
+                                          : Icons.visibility_off,
+                                    ),
+                                    onPressed: () {
+                                      controller
+                                          .togglePasswordVisibility(); // 비밀번호 표시 전환
+                                    },
+                                  ),
+                                  contentPadding: EdgeInsets.only(top: 8),
+                                ),
+                              )),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 10),
                     Obx(() => Text(
                           controller.isPasswordMatch.value
                               ? ''
@@ -169,40 +249,27 @@ class SignUpPage extends StatelessWidget {
 Widget signupButton(SignupController controller) {
   return SizedBox(
     width: double.infinity, // 버튼이 가로 전체 차지
-    height: 50,
-    child: Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15.0), // 버튼의 모서리를 둥글게 설정
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5), // 음영 색상
-            spreadRadius: 2,
-            blurRadius: 10,
-            offset: Offset(0, 5), // 음영 위치 (x축, y축)
-          ),
-        ],
-      ),
-      child: OutlinedButton(
-        onPressed: () {
-          if (controller.isPasswordMatch.value) {
-            controller.signupButton(); // 비밀번호 일치 시 회원가입 동작 호출
-          }
-        },
-        style: OutlinedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0), // 테두리 둥글게
-          ),
-          side: BorderSide(color: Colors.white, width: 4.0), // 흰색 테두리
-          padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 5.0),
-          backgroundColor: Colors.transparent, // 배경 투명
+    height: 40,
+    child: OutlinedButton(
+      onPressed: () {
+        if (controller.isPasswordMatch.value) {
+          controller.signupButton(); // 비밀번호 일치 시 회원가입 동작 호출
+        }
+      },
+      style: OutlinedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0), // 테두리 둥글게
         ),
-        child: Text(
-          '회원가입',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 22.0,
-            fontWeight: FontWeight.bold, // 글자 두껍게
-          ),
+        side: BorderSide(color: Colors.white, width: 4.0), // 흰색 테두리
+        padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 5.0),
+        backgroundColor: Colors.transparent, // 배경 투명
+      ),
+      child: Text(
+        '회원가입',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 22.0,
+          fontWeight: FontWeight.bold, // 글자 두껍게
         ),
       ),
     ),
