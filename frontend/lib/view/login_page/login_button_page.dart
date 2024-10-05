@@ -6,7 +6,7 @@ class LoginButtonPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    precacheImage(AssetImage('assets/login_image.webp'), context);
+    precacheImage(AssetImage('assets/photo/login_image.png'), context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -15,7 +15,7 @@ class LoginButtonPageView extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/login_image.webp'),
+                image: AssetImage('assets/photo/login_image.png'),
                 fit: BoxFit.cover,
               ),
             ),

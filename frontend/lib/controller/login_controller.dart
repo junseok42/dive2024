@@ -29,7 +29,7 @@ class LoginController extends GetxController {
         var accessToken = data['access_token'];
         var refreshToken = data['refresh_token'];
         await saveTokens(accessToken, refreshToken);
-        Get.offAllNamed('/travel');
+        Get.offAllNamed('/main');
       } else {
         // 로그인 실패 처리
         Get.snackbar(

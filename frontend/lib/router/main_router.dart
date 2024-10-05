@@ -12,15 +12,9 @@ import 'package:frontend/view/login_page/login_button_page.dart';
 class MainRouter {
   static final List<GetPage> routes = [
     GetPage(
-      name: '/',
+      name: '/main',
       page: () => MainLayout(
         child: MainPageView(),
-      ),
-    ),
-    GetPage(
-      name: '/loginButton',
-      page: () => const MainLayout(
-        child: LoginButtonPageView(),
       ),
     ),
     GetPage(
