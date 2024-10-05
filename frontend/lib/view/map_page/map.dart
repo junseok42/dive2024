@@ -35,6 +35,28 @@ class _MapScreenState extends State<MapScreen> {
   late String regionName; // late 키워드로 나중에 초기화 가능하게 설정
   late String district; // district도 나중에 초기화 가능하게 설정
 
+  //다이얼로그출력
+  showar() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('부산도시공사 아르피나로 놀러오세요 ~'),
+          scrollable: true,
+          content: Column(children: [Text('주소 : 부산광역시 해운대구 해운대해변로 35, 부산도시공사 아르피나\n    부산도시공사가 운영하는 아름답게 피어나다라는 뜻의 아르피나는 지리적으로 해운대, 광안리, 부산전시컨벤션센터(BEXCO), 센텀시티의 중앙에 위치하고 있습니다. 누구나 편안하게 이용할 수 있는 깨끗한 숙박시설과 연회장, 스포츠센터등 다양한 부대시설을 갖추고 있으니 꼭 놀러오세요!'),Text('<숙박정보>'),
+            Text(' 주중/ 2인 침대 / 55000\n주중 / 3인 침대 / 66000\n주중/ 4인 침대 / 77000\n주중 / 4인 온돌 / 77000\n주중 / 6인 침대(유스룸) / 90000\n주중 / 8인 온돌(유스룸) / 120000\n주중 / 5인 콘도 / 110000\n주말 / 2인 침대 / 99000\n주말 / 3인 침대 / 110000\n주말 / 4인 침대 / 110000\n주말 / 4인 온돌 / 121000\n주말 / 6인 침대(유스룸) / 99000\n주말 / 8인 온돌(유스룸) / 120000\n주말 / 5인 콘도 / 165000\n성수기 주중 / 2인 침대 / 110000\n성수기 주중 / 3인 침대 / 121000\n성수기 주중 / 4인 침대 / 132000\n성수기 주중 / 4인 온돌 / 132000\n성수기 주중 / 6인 침대(유스룸) / 90000\n성수기 주중 / 8인 온돌(유스룸) / 120000\n성수기 주중 / 5인 콘도 / 187000\n성수기 주말 / 2인 침대 / 143000\n성수기 주말 / 3인 침대 / 154000\n성수기 주말 / 4인 침대 / 165000\n성수기 주말 / 4인 온돌 / 165000\n성수기 주말 / 6인 침대(유스룸) / 90000\n성수기 주말 / 8인 온돌(유스룸) / 120000\n성수기 주말 / 5인 콘도 / 220000')],
+          ),
+          actions: [
+            TextButton(
+              child: Text('꼭 찾아갈게요 ~'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -493,6 +515,8 @@ class _MapScreenState extends State<MapScreen> {
                         final firstMarker = allMarkers.first.position;
                         _moveCameraToPosition(firstMarker);
                       }
+                      if (district == '해운대구')
+                        showar();
                     },
                     initialCameraPosition: _initialPosition,
                     markers: allMarkers,
