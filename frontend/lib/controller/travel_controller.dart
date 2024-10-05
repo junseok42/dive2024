@@ -13,6 +13,7 @@ class TravelController extends GetxController {
   List<Map<String, dynamic>> subwaylist = [];
   List<Map<String, dynamic>> subwayinfo = [];
   List<Map<String, dynamic>> subwaylocker = [];
+  List<String> districts = [];
 
   Future<void> fetchImage(String regionName) async {
     try {
@@ -188,6 +189,38 @@ class TravelController extends GetxController {
       }
     } catch (e) {
       print('Error fetching region data: $e');
+    }
+  }
+
+  Future<void> fetchDistricts() async {
+    try {
+      final response = await http.get(
+        Uri.parse('${Urls.apiUrl}region/show_puzzle_area'),
+      );
+
+      if (response.statusCode == 200) {
+        // UTF-8로 디코딩 후 JSON 파싱
+        final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
+
+        // 중복을 제거하고 'district' 필드만 추출한 후 리스트로 변환
+        districts =
+            data.map((item) => item['district'].toString()).toSet().toList();
+
+        // 추출된 districts 리스트 확인
+        print('Districts List: $districts');
+
+        // 데이터가 제대로 들어왔는지 확인
+        if (districts.isEmpty) {
+          print('Districts list is empty.');
+        }
+
+        // 화면 업데이트
+        update();
+      } else {
+        throw Exception('Failed to load districts');
+      }
+    } catch (e) {
+      print('Error fetching districts: $e');
     }
   }
 }
