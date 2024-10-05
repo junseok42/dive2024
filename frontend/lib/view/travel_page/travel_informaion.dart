@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:frontend/controller/travel_controller.dart';
 import 'package:get/get.dart';
 
-
 class TravelInformation extends StatefulWidget {
   const TravelInformation({super.key});
 
@@ -186,7 +185,8 @@ class _TravelInformationState extends State<TravelInformation> {
         );
       case '주변 숙박 및 맛집 정보':
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          Navigator.pushNamed(context, '/map',arguments: controller.regionName); // 라우터에 등록된 페이지 이름으로 이동
+          Navigator.pushNamed(context, '/map',
+              arguments: controller.regionName); // 라우터에 등록된 페이지 이름으로 이동
         });
         return Container(); // 페이지 전환 후 기존 페이지는 비워둠
       default:
