@@ -112,3 +112,10 @@ class lodgment(region_Base):
     locker = Column(Boolean)
     wheel =  Column(Boolean)
     road =  Column(Boolean)
+
+class ar_fee(region_Base):
+    __tablename__ = "ar_fee"
+    id = Column(Integer, primary_key=True, index=True)
+    time = Column(String(20))
+    type = Column(String(50))
+    fee = Column(Integer)
