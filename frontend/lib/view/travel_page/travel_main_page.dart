@@ -24,16 +24,41 @@ class TravelMainPage extends StatelessWidget {
               ),
             ),
           ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding:
+                  EdgeInsets.only(top: statusBarHeight + 30), // 상태바 아래로 30만큼 띄움
+              child: Text(
+                '부산 원정대',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
           Positioned(
-            top: statusBarHeight + 5,
-            left: 5,
+            top: statusBarHeight + 23,
+            left: 25,
             child: IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: Icon(Icons.arrow_back_ios),
               color: Colors.black,
-              iconSize: 30.0,
+              iconSize: 25.0,
               onPressed: () {
                 Get.back();
               },
+            ),
+          ),
+          Positioned(
+            top: statusBarHeight + 20,
+            right: 25,
+            child: IconButton(
+              icon: Icon(Icons.extension_outlined),
+              color: Color(0xFFFF7985),
+              iconSize: 30.0,
+              onPressed: () {},
             ),
           ),
           Positioned(
