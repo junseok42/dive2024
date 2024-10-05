@@ -11,7 +11,7 @@ router = APIRouter(
     prefix="/information",
 )
 # 이미지 저장 경로
-IMAGE_DIR = '/img'
+IMAGE_DIR = '/home/kimtaewoo2242/dive2024/backend/img'
 
 @router.post("/upload/")
 async def upload_image(file: UploadFile = File(...)):
