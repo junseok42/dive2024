@@ -141,8 +141,8 @@ class TravelMainPage extends StatelessWidget {
             }, controller.districts),
           ),
           Positioned(
-            top: screenHeight * 0.52,
-            left: screenWidth * 0.57,
+            top: screenHeight * 0.5,
+            left: screenWidth * 0.66,
             child: regionButtonV('수영구', () {
               Get.toNamed('/travelinfo', arguments: "수영구");
             }, controller.districts),

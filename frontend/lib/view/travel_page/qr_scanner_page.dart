@@ -79,19 +79,24 @@ class _QRScannerPageState extends State<QRScannerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('QR 코드 스캔'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: () {
-              controller?.resumeCamera(); // 카메라 재시작
-            },
-          ),
-        ],
-      ),
+      backgroundColor: Colors.black, // 배경을 검정색으로 설정
       body: Column(
         children: <Widget>[
+          // 상태바와 뒤로 가기 버튼 부분
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              children: [
+                IconButton(
+                  icon: Icon(Icons.arrow_back, color: Colors.white),
+                  onPressed: () {
+                    Get.back();
+                  },
+                ),
+                Spacer(),
+              ],
+            ),
+          ),
           Expanded(
             flex: 5,
             child: QRView(
@@ -110,8 +115,22 @@ class _QRScannerPageState extends State<QRScannerPage> {
             flex: 1,
             child: Center(
               child: (result != null)
-                  ? Text('QR 코드 결과: ${result!.code}')
-                  : Text('QR 코드를 스캔하세요'),
+                  ? Text(
+                      'QR 코드 결과: ${result!.code}',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18, // 글자 크기를 키움
+                        fontWeight: FontWeight.bold, // Bold로 설정
+                      ),
+                    )
+                  : Text(
+                      'QR 코드를 스캔하세요',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18, // 글자 크기를 키움
+                        fontWeight: FontWeight.bold, // Bold로 설정
+                      ),
+                    ),
             ),
           ),
         ],
