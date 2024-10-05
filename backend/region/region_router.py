@@ -49,7 +49,7 @@ def delete_district(district_id: int, region_db: Session = Depends(get_region_db
 @router.get("/subway/list")
 def show_list_subway(district : str,region_db: Session = Depends(get_region_db)):
     station_data = region_db.query(Subway_Model).filter(Subway_Model.district == district).all()
-    return  [{"id": station.id, "name": station.station_name, "latitude" : station.latitude, "longitude" : station.longitude} for station in station_data]
+    return  [{"id": station.id, "name": station.station_name,"line": station.line, "latitude" : station.latitude, "longitude" : station.longitude} for station in station_data]
 
 @router.get("/subway/info")
 def show_info_station(station_id : int,region_db: Session = Depends(get_region_db)):
