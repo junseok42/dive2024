@@ -87,9 +87,9 @@ def login_user(user: Login_user, db: Session = Depends(get_userdb)):
         refresh_token = create_refresh_token(
             data={"sub": user.user_id}, expires_delta=refresh_token_expires
         )
-    
+        check = db.query(User_model).filter(User_model.user_id == check_user.user_id).first()
         # 로그인에서 유저 타입 주는거 수정하기
-        return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer"}
+        return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer", "puzzle" : check.current_puzzle}
 
 
 @router.post("/token/refresh")
