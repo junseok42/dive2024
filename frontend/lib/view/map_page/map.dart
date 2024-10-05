@@ -4,17 +4,11 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'data.dart' as data;
 import 'package:shared_preferences/shared_preferences.dart';
-// 관광 지도-> 해서 페이지 바꾸고 갈 곳 띄우고(퍼즐은 다른색으로 강조) -> 식당, 숙소 띄우기, 근처 지하철역 및 편의시설 띄우기
-// 아르피나 해운대에 띄우기
-// token -> invalid 토큰
+import 'package:get/get.dart';
 
 final cdata = data.data;
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
+class Maps extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,17 +28,26 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   // API URLs
-  final String district = '동래구'; // 데이터 받아서 수정해야됨
+  late String regionName; // late 키워드로 나중에 초기화 가능하게 설정
+  late String district; // district도 나중에 초기화 가능하게 설정
+
+  @override
+  void initState() {
+    super.initState();
+    regionName = Get.arguments as String; // Get.arguments에서 regionName 가져옴
+    district = regionName; // 가져온 regionName을 district에 할당
+    fetchAllData(); // 데이터를 가져오는 함수 호출
+  }
+
   final String lodgmentUrl =
       'http://34.47.82.36:8000/region/show_lodgment/{district_name}?district=';
-  final String foodUrl =
-      'http://34.47.82.36:8000/region/food/list?district=';
+  final String foodUrl = 'http://34.47.82.36:8000/region/food/list?district=';
   final String stationUrl =
       'http://34.47.82.36:8000/region/subway/list?district=';
   final String stationPlusUrl =
       'http://34.47.82.36:8000/region/subway/info?station_id=';
-  final String attractUrl =
-      'http://34.47.82.36:8000/region/attract/';
+  final String attractUrl = 'http://34.47.82.36:8000/region/attract/';
+
   // 데이터 리스트
   List<dynamic> attractData = [];
   List<dynamic> lodgmentData = [];
@@ -68,12 +71,6 @@ class _MapScreenState extends State<MapScreen> {
     zoom: 14,
   );
 
-  @override
-  void initState() {
-    super.initState();
-    fetchAllData();
-  }
-
   // 모든 데이터 가져오기
   Future<void> fetchAllData() async {
     setState(() {
@@ -89,7 +86,12 @@ class _MapScreenState extends State<MapScreen> {
 
     // 모든 마커를 한 번에 상태로 업데이트
     setState(() {
-      allMarkers = {...lodgmentMarkers, ...foodMarkers, ...stationMarkers, ...attractMarkers};
+      allMarkers = {
+        ...lodgmentMarkers,
+        ...foodMarkers,
+        ...stationMarkers,
+        ...attractMarkers
+      };
       isLoading = false;
     });
   }
@@ -97,7 +99,7 @@ class _MapScreenState extends State<MapScreen> {
   // 관광명소 데이터 가져오기
   Future<void> fetchAttractData() async {
     final prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString('access_token');;
+    String? accessToken = prefs.getString('access_token');
     try {
       final response = await http.get(Uri.parse('$attractUrl$district'),
           headers: {'Authorization': 'Bearer ${accessToken}'});
@@ -126,8 +128,7 @@ class _MapScreenState extends State<MapScreen> {
     // 문자열을 double로 파싱
     final double lat = double.parse(cdata[district][item['name']]['위도']);
     final double lng = double.parse(cdata[district][item['name']]['경도']);
-    print(lat);
-    print(lng);
+
     final marker = Marker(
       markerId: MarkerId('attract_${item['name']}'),
       position: LatLng(lat, lng),
@@ -164,7 +165,6 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
-  // 숙소 아이템 좌표 가져오기 및 마커 생성
   Future<Marker> _fetchCoordinateForLodgmentItem(int index) async {
     final item = lodgmentData[index];
     final double? lng = item['latitude'];
@@ -173,7 +173,8 @@ class _MapScreenState extends State<MapScreen> {
     final marker = Marker(
       markerId: MarkerId('lodgment_${item['name']}'),
       position: LatLng(lat!, lng!),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+      icon:
+      BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
       infoWindow: InfoWindow(
         title: item['name'],
         snippet: '숙소 정보 보기',
@@ -207,7 +208,6 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
-  // 음식점 아이템 좌표 가져오기 및 마커 생성
   Future<Marker> _fetchCoordinateForFoodItem(int index) async {
     final item = foodData[index];
     final double? lat = item['latitude'];
@@ -216,7 +216,8 @@ class _MapScreenState extends State<MapScreen> {
     final marker = Marker(
       markerId: MarkerId('${item['name']}'),
       position: LatLng(lat!, lng!),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
+      icon:
+      BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
       infoWindow: InfoWindow(
         title: item['name'],
         snippet: '음식점 정보 보기',
@@ -237,7 +238,6 @@ class _MapScreenState extends State<MapScreen> {
         for (int i = 0; i < stationIdData.length; i++) {
           stationIds.add(stationIdData[i]["id"]);
         }
-        print(stationIds);
         await _getStationData();
         await _processStationData();
       } else {
@@ -254,10 +254,8 @@ class _MapScreenState extends State<MapScreen> {
       try {
         final response = await http.get(Uri.parse('$stationPlusUrl$id'));
         if (response.statusCode == 200) {
-          // 응답을 파싱합니다.
           List<dynamic> stationDataResponse =
           jsonDecode(utf8.decode(response.bodyBytes));
-          // 리스트의 첫 번째 요소를 사용합니다.
           if (stationDataResponse.isNotEmpty) {
             Map<String, dynamic> stationData = stationDataResponse[0];
             stationDataList.add(stationData);
@@ -271,7 +269,6 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
-  // 지하철역 데이터 처리
   Future<void> _processStationData() async {
     for (int i = 0; i < stationDataList.length; i++) {
       final marker = await _fetchCoordinateForStationItem(i);
@@ -279,7 +276,6 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
-  // 지하철역 아이템 좌표 가져오기 및 마커 생성
   Future<Marker> _fetchCoordinateForStationItem(int index) async {
     final item = stationDataList[index];
 
@@ -424,26 +420,78 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
+  // Hue 값을 Color로 변환하는 함수
+  Color _getColorFromHue(double hue) {
+    if (hue == BitmapDescriptor.hueRed) return Colors.red;
+    if (hue == BitmapDescriptor.hueOrange) return Colors.orange;
+    if (hue == BitmapDescriptor.hueViolet) return Colors.purple;
+    if (hue == BitmapDescriptor.hueGreen) return Colors.green;
+    return Colors.grey;
+  }
+
+  // 레전드 아이템 생성 위젯
+  Widget _buildLegendItem({required double hue, required String text}) {
+    return Row(
+      children: [
+        Icon(
+          Icons.location_on,
+          color: _getColorFromHue(hue),
+        ),
+        SizedBox(width: 4),
+        Text(text),
+      ],
+    );
+  }
+
   // 화면 구성
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('근처 정보'),
+        title: Text('구 맛집, 관광지 및 역사 지도'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // 뒤로 가기 기능
+          },
+        ),
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
-          : GoogleMap(
-        onMapCreated: (GoogleMapController controller) {
-          mapController = controller;
-          if (allMarkers.isNotEmpty) {
-            final firstMarker = allMarkers.first.position;
-            print(firstMarker);
-            _moveCameraToPosition(firstMarker);
-          }
-        },
-        initialCameraPosition: _initialPosition,
-        markers: allMarkers,
+          : Column(
+        children: [
+          // 레전드 표시 영역
+          Container(
+            padding: EdgeInsets.all(8.0),
+            color: Colors.white,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildLegendItem(
+                    hue: BitmapDescriptor.hueRed, text: '관광명소'),
+                _buildLegendItem(
+                    hue: BitmapDescriptor.hueOrange, text: '음식점'),
+                _buildLegendItem(
+                    hue: BitmapDescriptor.hueViolet, text: '숙소'),
+                _buildLegendItem(
+                    hue: BitmapDescriptor.hueGreen, text: '지하철역'),
+              ],
+            ),
+          ),
+          Expanded(
+            child: GoogleMap(
+              onMapCreated: (GoogleMapController controller) {
+                mapController = controller;
+                if (allMarkers.isNotEmpty) {
+                  final firstMarker = allMarkers.first.position;
+                  _moveCameraToPosition(firstMarker);
+                }
+              },
+              initialCameraPosition: _initialPosition,
+              markers: allMarkers,
+            ),
+          ),
+        ],
       ),
     );
   }

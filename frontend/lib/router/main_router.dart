@@ -8,6 +8,7 @@ import 'package:frontend/view/login_page/myinfo_page.dart';
 import 'package:frontend/view/login_page/signup_page.dart';
 import 'package:frontend/view/travel_page/travel_main_page.dart';
 import 'package:frontend/view/travel_page/travel_informaion.dart';
+import 'package:frontend/view/map_page/map.dart';
 
 class MainRouter {
   static final List<GetPage> routes = [
@@ -46,6 +47,10 @@ class MainRouter {
       page: () => const MainLayout(
         child: QRScannerPage(),
       ),
+    ),
+    GetPage(
+      name: '/map',
+      page: () => Maps()
     ),
   ];
 }

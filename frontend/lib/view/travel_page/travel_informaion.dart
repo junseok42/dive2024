@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/controller/travel_controller.dart';
 import 'package:get/get.dart';
 
+
 class TravelInformation extends StatefulWidget {
   const TravelInformation({super.key});
 
@@ -184,7 +185,10 @@ class _TravelInformationState extends State<TravelInformation> {
           ),
         );
       case '주변 숙박 및 맛집 정보':
-        return buildCategoryList_2([]);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.pushNamed(context, '/map',arguments: controller.regionName); // 라우터에 등록된 페이지 이름으로 이동
+        });
+        return Container(); // 페이지 전환 후 기존 페이지는 비워둠
       default:
         return Container();
     }
@@ -285,7 +289,7 @@ class _TravelInformationState extends State<TravelInformation> {
                     showDetailDialog(item['id'], item['name']); // 다이얼로그 호출
                   },
                   child: Text(
-                    '위치 보기 >', // 더보기 버튼
+                    '정보 보기 >', // 더보기 버튼
                     style: TextStyle(color: Color(0xFF929292), fontSize: 12),
                   ),
                 ),
