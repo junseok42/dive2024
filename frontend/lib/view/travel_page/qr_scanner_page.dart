@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:frontend/constants/url.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class QRScannerPage extends StatefulWidget {
   const QRScannerPage({super.key});
@@ -53,19 +55,19 @@ class _QRScannerPageState extends State<QRScannerPage> {
     if (qrData == null) return;
 
     try {
+      final prefs = await SharedPreferences.getInstance();
+      String? accessToken = prefs.getString('access_token');
+
       var response = await http.post(
-        Uri.parse('https://example.com/api/submit_qr'), // 서버의 URL 입력
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'qr_code': qrData}),
+        Uri.parse(qrData), // 서버의 URL 입력
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken',
+        },
       );
 
       if (response.statusCode == 200) {
-        // 서버가 정상 처리하면 퍼즐 페이지로 이동
-        List<dynamic> puzzleIndices =
-            jsonDecode(response.body)['puzzle_indices'];
-
-        // 퍼즐 페이지로 인덱스를 넘기며 이동
-        Get.toNamed('/myinfo', arguments: puzzleIndices);
+        Get.toNamed('/myinfo');
       } else {
         print('QR 처리 실패: ${response.statusCode}');
       }
