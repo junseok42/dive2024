@@ -69,6 +69,7 @@ flutter:
     - assets/photo/puzzle_image.png
     - assets/config/.env
     - assets/photo/puzzle_select1.png
+    - assets/photo/yeongdo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
