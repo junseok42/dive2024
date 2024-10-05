@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/url.dart';
+import 'package:frontend/controller/travel_controller.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -37,6 +38,10 @@ class LoginController extends GetxController {
   // 토큰 체크 및 갱신 로직
   Future<void> checkToken() async {
     final prefs = await SharedPreferences.getInstance();
+
+    final TravelController controller = Get.put(TravelController());
+    controller.fetchDistricts();
+
     String? accessToken = prefs.getString('access_token');
     String? refreshToken = prefs.getString('refresh_token');
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/controller/myinfo_controller.dart';
+import 'package:frontend/controller/travel_controller.dart';
 import 'package:get/get.dart';
 
 class TravelMainPage extends StatelessWidget {
@@ -8,6 +9,9 @@ class TravelMainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     precacheImage(AssetImage('assets/photo/select_region.png'), context);
+
+    final TravelController controller = Get.put(TravelController());
+    controller.fetchDistricts();
 
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final screenWidth = MediaQuery.of(context).size.width;
@@ -64,112 +68,112 @@ class TravelMainPage extends StatelessWidget {
             left: screenWidth * 0.01,
             child: regionButtonV('강서구', () {
               Get.toNamed('/travelinfo', arguments: "강서구");
-            }),
+            }, controller.districts),
           ),
           Positioned(
             top: screenHeight * 0.26,
             left: screenWidth * 0.57,
             child: regionButtonV('금정구', () {
               Get.toNamed('/travelinfo', arguments: "금정구");
-            }),
+            }, controller.districts),
           ),
           Positioned(
             top: screenHeight * 0.16,
             left: screenWidth * 0.8,
             child: regionButtonV('기장군', () {
               Get.toNamed('/travelinfo', arguments: "기장군");
-            }),
+            }, controller.districts),
           ),
           Positioned(
             top: screenHeight * 0.56,
             left: screenWidth * 0.58,
             child: regionButtonV('남구', () {
               Get.toNamed('/travelinfo', arguments: "남구");
-            }),
+            }, controller.districts),
           ),
           Positioned(
             top: screenHeight * 0.61,
             left: screenWidth * 0.32,
             child: regionButtonH('동구', () {
               Get.toNamed('/travelinfo', arguments: "동구");
-            }),
+            }, controller.districts),
           ),
           Positioned(
             top: screenHeight * 0.4,
             left: screenWidth * 0.46,
             child: regionButtonH('동래구', () {
               Get.toNamed('/travelinfo', arguments: "동래구");
-            }),
+            }, controller.districts),
           ),
           Positioned(
             top: screenHeight * 0.52,
             left: screenWidth * 0.33,
             child: regionButtonH('부산진구', () {
               Get.toNamed('/travelinfo', arguments: "부산진구");
-            }),
+            }, controller.districts),
           ),
           Positioned(
             top: screenHeight * 0.35,
             left: screenWidth * 0.26,
             child: regionButtonH('북구', () {
               Get.toNamed('/travelinfo', arguments: "북구");
-            }),
+            }, controller.districts),
           ),
           Positioned(
             top: screenHeight * 0.5,
             left: screenWidth * 0.13,
             child: regionButtonH('사상구', () {
               Get.toNamed('/travelinfo', arguments: "사상구");
-            }),
+            }, controller.districts),
           ),
           Positioned(
             top: screenHeight * 0.66,
             left: screenWidth * 0.14,
             child: regionButtonV('사하구', () {
               Get.toNamed('/travelinfo', arguments: "사하구");
-            }),
+            }, controller.districts),
           ),
           Positioned(
             top: screenHeight * 0.65,
             left: screenWidth * 0.26,
             child: regionButtonV('서구', () {
               Get.toNamed('/travelinfo', arguments: "서구");
-            }),
+            }, controller.districts),
           ),
           Positioned(
             top: screenHeight * 0.52,
             left: screenWidth * 0.57,
             child: regionButtonV('수영구', () {
               Get.toNamed('/travelinfo', arguments: "수영구");
-            }),
+            }, controller.districts),
           ),
           Positioned(
             top: screenHeight * 0.47,
             left: screenWidth * 0.47,
             child: regionButtonH('연제구', () {
               Get.toNamed('/travelinfo', arguments: "연제구");
-            }),
+            }, controller.districts),
           ),
           Positioned(
             top: screenHeight * 0.72,
             left: screenWidth * 0.46,
             child: regionButtonV('영도', () {
               Get.toNamed('/travelinfo', arguments: "영도");
-            }),
+            }, controller.districts),
           ),
           Positioned(
             top: screenHeight * 0.66,
             left: screenWidth * 0.36,
             child: regionButtonV('중구', () {
               Get.toNamed('/travelinfo', arguments: "중구");
-            }),
+            }, controller.districts),
           ),
           Positioned(
             top: screenHeight * 0.41,
             left: screenWidth * 0.78,
             child: regionButtonH('해운대', () {
               Get.toNamed('/travelinfo', arguments: "해운대구");
-            }),
+            }, controller.districts),
           ),
         ],
       ),
@@ -202,44 +206,75 @@ Widget loginButton() {
   );
 }
 
-Widget regionButtonV(String title, VoidCallback onPressed) {
+Widget regionButtonV(
+    String title, VoidCallback onPressed, List<String> districts) {
+  // districts 리스트에 title이 존재하면 빨간색 점을 추가
+  bool isInDistricts = districts.contains(title);
+
   return SizedBox(
     width: 50,
     height: 100,
-    child: ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
+    child: Stack(
+      alignment: Alignment.center, // 빨간 점을 가운데로 정렬
+      children: [
+        ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.transparent,
+            shadowColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+          ),
+          child: Text(
+            title,
+            style: TextStyle(color: Colors.transparent, fontSize: 16),
+          ),
         ),
-      ),
-      child: Text(
-        title,
-        style: TextStyle(color: Colors.transparent, fontSize: 16),
-      ),
+        Positioned(
+          child: Icon(
+            Icons.circle,
+            color: isInDistricts ? Colors.red : Colors.transparent,
+            size: 8,
+          ), // 빨간색 점을 가운데로 배치
+        ),
+      ],
     ),
   );
 }
 
-Widget regionButtonH(String title, VoidCallback onPressed) {
+Widget regionButtonH(
+    String title, VoidCallback onPressed, List<String> districts) {
+  bool isInDistricts = districts.contains(title);
+
   return SizedBox(
     width: 120,
     height: 50,
-    child: ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
+    child: Stack(
+      alignment: Alignment.center, // 빨간 점을 가운데로 정렬
+      children: [
+        ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.transparent,
+            shadowColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+          ),
+          child: Text(
+            title,
+            style: TextStyle(color: Colors.transparent, fontSize: 16),
+          ),
         ),
-      ),
-      child: Text(
-        title,
-        style: TextStyle(color: Colors.transparent, fontSize: 16),
-      ),
+        Positioned(
+          child: Icon(
+            Icons.circle,
+            color: isInDistricts ? Colors.red : Colors.transparent,
+            size: 8,
+          ), // 빨간색 점을 가운데로 배치
+        ),
+      ],
     ),
   );
 }
