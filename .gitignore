@@ -1,5 +1,4 @@
-
 backend/.env
 *.csv
-
-
+assets/config/.env
+frontend/ios/Flutter/Debug.xcconfig

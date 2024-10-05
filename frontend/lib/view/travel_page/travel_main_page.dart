@@ -28,7 +28,7 @@ class TravelMainPage extends StatelessWidget {
             child: IconButton(
               icon: Icon(Icons.arrow_back),
               color: Colors.black,
-              iconSize: 40.0,
+              iconSize: 30.0,
               onPressed: () {
                 Get.back();
               },

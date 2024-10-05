@@ -41,3 +41,14 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+/ios/Flutter/Debug.xcconfig
+/ios/Flutter/Release.xcconfig
+/ios/Podfile
+
+/linux/flutter/generated_plugin_registrant.cache
+/linux/flutter/generated_plugin_registrant.cmake
+/macos/Flutter/Flutter-Debug.xcconfig
+/macos/Flutter/Flutter-Release.xcconfig
+
+/macos/Flutter/generated_plugin_registrant.swift

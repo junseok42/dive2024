@@ -6,7 +6,7 @@ class LoginButtonPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    precacheImage(AssetImage('assets/login_image.png'), context);
+    precacheImage(AssetImage('assets/login_image.webp'), context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -15,7 +15,7 @@ class LoginButtonPageView extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/login_image.png'),
+                image: AssetImage('assets/login_image.webp'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -26,7 +26,7 @@ class LoginButtonPageView extends StatelessWidget {
             child: IconButton(
               icon: Icon(Icons.home_outlined),
               color: Colors.white,
-              iconSize: 40.0,
+              iconSize: 30.0,
               onPressed: () {
                 Get.back();
               },
@@ -55,21 +55,38 @@ Widget loginButton() {
   return SizedBox(
     width: 145,
     height: 65,
-    child: OutlinedButton(
-      onPressed: () {},
-      style: OutlinedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(33.0),
-        ),
-        side: BorderSide(color: Colors.white, width: 5.0),
-        padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 15.0),
-        backgroundColor: Colors.transparent,
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(33.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5), // 음영 색상
+            spreadRadius: 2,
+            blurRadius: 10,
+            offset: Offset(0, 5), // 음영 위치 (x축, y축)
+          ),
+        ],
       ),
-      child: Text(
-        '로그인',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 22.0,
+      child: OutlinedButton(
+        onPressed: () {
+          Get.toNamed('/login');
+        },
+        style: OutlinedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(33.0),
+          ),
+          side: BorderSide(color: Colors.white, width: 5.0),
+          padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 15.0),
+          backgroundColor:
+              Color.fromRGBO(221, 198, 158, 1), // 버튼 내부 색상 설정 (RGB)
+        ),
+        child: Text(
+          '로그인',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 22.0,
+            fontWeight: FontWeight.bold, // 글자 두께를 굵게 설정
+          ),
         ),
       ),
     ),

@@ -30,11 +30,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  url_launcher: ^6.0.9
+  flutter_dotenv: ^5.0.2
   get: ^4.6.6
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  http: ^1.2.0
+  shared_preferences: ^2.0.13
 
 dev_dependencies:
   flutter_test:
@@ -65,6 +69,7 @@ flutter:
     - assets/login_image.webp
     - assets/select_region.png
     - assets/select_region.webp
+    - assets/config/.env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

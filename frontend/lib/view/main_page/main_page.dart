@@ -9,6 +9,7 @@ class MainPageView extends StatelessWidget {
     // 상단 상태바의 높이를 가져옴
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     precacheImage(AssetImage('assets/main_image.png'), context);
+    precacheImage(AssetImage('assets/login_image.png'), context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -33,15 +34,15 @@ class MainPageView extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.person_outline),
                   color: Colors.white,
-                  iconSize: 40.0,
+                  iconSize: 30.0,
                   onPressed: () {
-                    Get.toNamed('/login');
+                    Get.toNamed('/loginButton');
                   },
                 ),
                 IconButton(
                   icon: Icon(Icons.notifications_none),
                   color: Colors.white,
-                  iconSize: 40.0,
+                  iconSize: 30.0,
                   onPressed: () {},
                 ),
               ],
