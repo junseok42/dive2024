@@ -2,3 +2,5 @@ backend/.env
 *.csv
 assets/config/.env
 frontend/ios/Flutter/Debug.xcconfig
+frontend/linux/flutter/generated_plugin_registrant.cc
+frontend/linux/flutter/generated_plugin_registrant.cc

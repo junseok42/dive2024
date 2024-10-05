@@ -47,7 +47,7 @@ class TravelMainPage extends StatelessWidget {
               color: Colors.black,
               iconSize: 25.0,
               onPressed: () {
-                Get.back();
+                Get.toNamed('/myinfo');
               },
             ),
           ),
