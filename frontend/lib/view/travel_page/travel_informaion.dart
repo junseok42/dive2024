@@ -79,7 +79,7 @@ class _TravelInformationState extends State<TravelInformation> {
   }
 
   Widget buildCategoryTabs() {
-    List<String> categories = ['추천 명소 리스트', '도시 철도 정보', '주변 편의 시설', '주변 숙박 시설'];
+    List<String> categories = ['추천 명소 리스트', '도시 철도 정보', '주변 숙박 및 맛집 정보'];
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -134,13 +134,7 @@ class _TravelInformationState extends State<TravelInformation> {
           '1호선: 남포역',
           '2호선: 국제시장역',
         ]);
-      case '주변 편의 시설':
-        return buildCategoryList_2([
-          '편의점',
-          '카페',
-          '식당',
-        ]);
-      case '주변 숙박 시설':
+      case '주변 숙박 및 맛집 정보':
         return buildCategoryList_2([
           '영도 호텔',
           '게스트하우스',
@@ -254,37 +248,114 @@ void showDetailDialog(String item) {
       ),
       contentPadding: EdgeInsets.all(20),
       backgroundColor: Colors.white,
-      title: Text(
-        '$item 상세 정보',
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
-        textAlign: TextAlign.center,
-      ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '남포역은 부산 도시철도 1호선에 위치한 역으로, 주변에 국제시장과 자갈치 시장이 있습니다. 또한 다양한 쇼핑과 먹거리가 있습니다.',
-            style: TextStyle(fontSize: 16),
+            '서면역 내 편의 시설',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+            textAlign: TextAlign.center,
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 15),
+          buildFacilityRow('만남의 장소', true),
+          buildFacilityRow('물품 보관소', true),
+          buildFacilityRow('포토부스', false),
+          buildFacilityRow('무인 민원 발급기', true),
+          buildFacilityRow('수유실', false),
+          buildFacilityRow('휠체어 리프트', true),
+          buildFacilityRow('시각 장애인 유도선', false),
+          SizedBox(height: 30),
+
+          // 서면역 내 물품 보관소
           Text(
-            '위치: 부산광역시 중구',
-            style: TextStyle(color: Colors.grey, fontSize: 14),
+            '서면역 내 물품 보관소',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+            textAlign: TextAlign.center,
           ),
+          SizedBox(height: 15),
+          buildStorageRow('소 (9,000)', 51),
+          buildStorageRow('중 (15,900)', 15),
+          buildStorageRow('대 ()', 0),
+          buildStorageRow('특 (21,000)', 9),
         ],
       ),
       actions: [
-        TextButton(
-          onPressed: () {
-            Get.back(); // 다이얼로그 닫기
-          },
-          child: Text('확인'),
+        Center(
+          child: ElevatedButton(
+            onPressed: () {
+              Get.back(); // 다이얼로그 닫기
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF9BC2F4),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            child: Text(
+              '확인',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
         ),
       ],
     ),
+  );
+}
+
+// 편의 시설을 위한 행 생성 함수
+Widget buildFacilityRow(String name, bool available) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Text(
+        name,
+        style: TextStyle(
+          fontSize: 18,
+          color: Color(0xFF525252),
+        ),
+      ),
+      Text(
+        available ? 'O' : 'X',
+        style: TextStyle(
+          fontSize: 18,
+          color: available ? Color(0xFF525252) : Colors.red,
+        ),
+      ),
+    ],
+  );
+}
+
+// 물품 보관소 정보를 위한 행 생성 함수
+Widget buildStorageRow(String size, int quantity) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Text(
+        size,
+        style: TextStyle(
+          fontSize: 18,
+          color: Color(0xFF525252),
+        ),
+      ),
+      Text(
+        '$quantity',
+        style: TextStyle(
+          fontSize: 18,
+          color: Color(0xFF525252),
+        ),
+      ),
+    ],
   );
 }
